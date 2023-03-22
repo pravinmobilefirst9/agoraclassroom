@@ -17,7 +17,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.description}>
           <p>
-            Testing Page Pravin 2023&nbsp;
+            Demo Test App&nbsp;
             <code className={styles.code}>pages/index.tsx</code>
           </p>
           <div>
