@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netless/fastboard": "^0.3.7",
+    "@netless/window-manager": "^0.4.55",
     "@types/node": "18.15.5",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
@@ -16,9 +18,11 @@
     "agora-rtm-sdk": "^1.6.0-205",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "jspdf": "^2.5.1",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "5.0.2"
+    "typescript": "5.0.2",
+    "white-web-sdk": "^2.16.41"
   }
 }

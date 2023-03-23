@@ -9,6 +9,13 @@ const inter = Inter({ subsets: ['latin'] })
 //import "../styles/lobby.css";
 import Script from 'next/script'
 import Link from 'next/link';
+import dynamic from 'next/dynamic'
+
+const Whiteboard = dynamic(() => import("../components/whiteBoard"), {
+    ssr: false,
+  });
+  
+  
 
 export default function Home() {
 
@@ -107,6 +114,9 @@ export default function Home() {
                 </div>
 
                 <button id = "join-btn">Join Room</button>
+
+                <Whiteboard />
+                
             </section>
 
             <section id="messages__container">
