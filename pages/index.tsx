@@ -2,10 +2,17 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
+import {AgoraEduSDK} from 'agora-classroom-sdk'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  AgoraEduSDK.config({
+    appId: 'a9a93ac27e184ee4bd333586bc90eff9',
+    region: 'NA'
+});
+
   return (
     <>
       <Head>
