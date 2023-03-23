@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
 
-  AgoraEduSDK.config({
-    appId: 'a9a93ac27e184ee4bd333586bc90eff9',
-    region: 'NA'
-});
+//   AgoraEduSDK.config({
+//     appId: 'a9a93ac27e184ee4bd333586bc90eff9',
+//     region: 'NA'
+// });
 
   return (
     <>
