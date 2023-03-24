@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Script from "next/script";
-
+import Link from "next/link";
 export default function Home() {
   const [name, setName] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
@@ -35,7 +35,7 @@ export default function Home() {
            
         </div>
         <div id="nav__links">
-          <a className="nav__link" id="create__room__btn" href="/">
+          <Link className="nav__link" id="create__room__btn" href="/">
             Create Room
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -46,7 +46,7 @@ export default function Home() {
             >
               <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z" />
             </svg>
-          </a>
+          </Link>
         </div>
       </header>
       <main id="room__lobby__container">
