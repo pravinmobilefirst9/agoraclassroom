@@ -7,6 +7,13 @@ export default function Home() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+
+    if(name === "" || roomId === "")
+    {
+      alert("Please fill the data of name and room id to continue.");
+      return false;
+    }
+
     sessionStorage.setItem("display_name", name);
 
     let inviteCode = roomId;
@@ -21,14 +28,14 @@ export default function Home() {
       <Script src="https://edu-sdk.vercel.app/js/lobby.js" />
       <header id="nav">
         <div className="nav--list">
-          <a href="index.html">
+           
             <h3 id="logo">
               <span>Virtual Classroom</span>
             </h3>
-          </a>
+           
         </div>
         <div id="nav__links">
-          <a className="nav__link" id="create__room__btn" href="index.html">
+          <a className="nav__link" id="create__room__btn" href="/">
             Create Room
             <svg
               xmlns="http://www.w3.org/2000/svg"
