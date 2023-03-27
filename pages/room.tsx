@@ -24,12 +24,14 @@ export default function Home() {
 //     region: 'NA'
 // });
 
+const timestamp = new Date().getTime()
+
   return (
     <>
        
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=getTime()"
+  src="https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=[timestamp]"
   onLoad={() => {
     console.log('agora-rtm-sdk-1.5.1 Script has loaded')
   }}
@@ -37,10 +39,19 @@ export default function Home() {
     console.log('agora-rtm-sdk-1.5.1 Script has Error')
   }}
   />
-  
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/room.js?v=getTime()"
+  src="https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=[timestamp]"
+  onLoad={() => {
+    console.log('AgoraRTC_N-4.14.0 Script has loaded')
+  }}
+  onError={() => {
+    console.log('AgoraRTC_N-4.14.0 Script has Error')
+  }}
+  />
+  <Script
+  type="text/javascript"
+  src="https://edu-sdk.vercel.app/js/room.js?v=[timestamp]"
   onLoad={() => {
     console.log('room Script has loaded')
   }}
@@ -50,7 +61,7 @@ export default function Home() {
   />
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/room_rtm.js?v=getTime()"
+  src="https://edu-sdk.vercel.app/js/room_rtm.js?v=[timestamp]"
   onLoad={() => {
     console.log('room_rtm Script has loaded')
   }}
@@ -60,23 +71,12 @@ export default function Home() {
   />
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/room_rtc.js?v=getTime()"
+  src="https://edu-sdk.vercel.app/js/room_rtc.js?v=[timestamp]"
   onLoad={() => {
     console.log('room_rtc Script has loaded')
   }}
   onError={() => {
     console.log('room_rtc Script has Error')
-  }}
-  />
-
-<Script
-  type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=getTime()"
-  onLoad={() => {
-    console.log('AgoraRTC_N-4.14.0 Script has loaded')
-  }}
-  onError={() => {
-    console.log('AgoraRTC_N-4.14.0 Script has Error')
   }}
   />
 
