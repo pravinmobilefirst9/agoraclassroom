@@ -31,7 +31,7 @@ const timestamp = new Date().getTime()
        
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=[timestamp]"
+  src={`https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=${timestamp}`}
   onLoad={() => {
     console.log('agora-rtm-sdk-1.5.1 Script has loaded')
   }}
@@ -41,7 +41,7 @@ const timestamp = new Date().getTime()
   />
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=[timestamp]"
+  src={`https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=${timestamp}`}
   onLoad={() => {
     console.log('AgoraRTC_N-4.14.0 Script has loaded')
   }}
@@ -51,7 +51,7 @@ const timestamp = new Date().getTime()
   />
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/room.js?v=[timestamp]"
+  src={`https://edu-sdk.vercel.app/js/room.js?v=${timestamp}`}
   onLoad={() => {
     console.log('room Script has loaded')
   }}
@@ -61,7 +61,7 @@ const timestamp = new Date().getTime()
   />
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/room_rtm.js?v=[timestamp]"
+  src={`https://edu-sdk.vercel.app/js/room_rtm.js?v=${timestamp}`}
   onLoad={() => {
     console.log('room_rtm Script has loaded')
   }}
@@ -71,7 +71,7 @@ const timestamp = new Date().getTime()
   />
   <Script
   type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/room_rtc.js?v=[timestamp]"
+  src={`https://edu-sdk.vercel.app/js/room_rtc.js?v=${timestamp}`}
   onLoad={() => {
     console.log('room_rtc Script has loaded')
   }}
