@@ -27,26 +27,56 @@ export default function Home() {
   return (
     <>
        
-       <Script
-        type="text/javascript"
-        src="https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js"
-      />
-      <Script
-        type="text/javascript"
-        src="https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js"
-      />
-      <Script
-        type="text/javascript"
-        src="https://edu-sdk.vercel.app/js/room.js"
-      />
-      <Script
-        type="text/javascript"
-        src="https://edu-sdk.vercel.app/js/room_rtm.js"
-      />
-      <Script
-        type="text/javascript"
-        src="https://edu-sdk.vercel.app/js/room_rtc.js"
-      />
+  <Script
+  type="text/javascript"
+  src="https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=getTime()"
+  onLoad={() => {
+    console.log('agora-rtm-sdk-1.5.1 Script has loaded')
+  }}
+  onError={() => {
+    console.log('agora-rtm-sdk-1.5.1 Script has Error')
+  }}
+  />
+  <Script
+  type="text/javascript"
+  src="https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=getTime()"
+  onLoad={() => {
+    console.log('AgoraRTC_N-4.14.0 Script has loaded')
+  }}
+  onError={() => {
+    console.log('AgoraRTC_N-4.14.0 Script has Error')
+  }}
+  />
+  <Script
+  type="text/javascript"
+  src="https://edu-sdk.vercel.app/js/room.js?v=getTime()"
+  onLoad={() => {
+    console.log('room Script has loaded')
+  }}
+  onError={() => {
+    console.log('room Script has Error')
+  }}
+  />
+  <Script
+  type="text/javascript"
+  src="https://edu-sdk.vercel.app/js/room_rtm.js?v=getTime()"
+  onLoad={() => {
+    console.log('room_rtm Script has loaded')
+  }}
+  onError={() => {
+    console.log('room_rtm Script has Error')
+  }}
+  />
+  <Script
+  type="text/javascript"
+  src="https://edu-sdk.vercel.app/js/room_rtc.js?v=getTime()"
+  onLoad={() => {
+    console.log('room_rtc Script has loaded')
+  }}
+  onError={() => {
+    console.log('room_rtc Script has Error')
+  }}
+  />
 
        
 
@@ -69,10 +99,10 @@ export default function Home() {
         <div id="nav__links">
             <button id="chat__button"><svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" fill="#ede0e0" clipRule="evenodd"><path d="M24 20h-3v4l-5.333-4h-7.667v-4h2v2h6.333l2.667 2v-2h3v-8.001h-2v-2h4v12.001zm-15.667-6l-5.333 4v-4h-3v-14.001l18 .001v14h-9.667zm-6.333-2h3v2l2.667-2h8.333v-10l-14-.001v10.001z"/></svg></button>
              
-            <a className="nav__link" id="create__room__btn" href="index.html">
+            {/* <a className="nav__link" id="create__room__btn" href="index.html">
                 Create Room
                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ede0e0" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z"/></svg>
-            </a>
+            </a> */}
         </div>
     </header>
 
