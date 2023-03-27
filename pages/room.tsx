@@ -37,16 +37,7 @@ export default function Home() {
     console.log('agora-rtm-sdk-1.5.1 Script has Error')
   }}
   />
-  <Script
-  type="text/javascript"
-  src="https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=getTime()"
-  onLoad={() => {
-    console.log('AgoraRTC_N-4.14.0 Script has loaded')
-  }}
-  onError={() => {
-    console.log('AgoraRTC_N-4.14.0 Script has Error')
-  }}
-  />
+  
   <Script
   type="text/javascript"
   src="https://edu-sdk.vercel.app/js/room.js?v=getTime()"
@@ -75,6 +66,17 @@ export default function Home() {
   }}
   onError={() => {
     console.log('room_rtc Script has Error')
+  }}
+  />
+
+<Script
+  type="text/javascript"
+  src="https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=getTime()"
+  onLoad={() => {
+    console.log('AgoraRTC_N-4.14.0 Script has loaded')
+  }}
+  onError={() => {
+    console.log('AgoraRTC_N-4.14.0 Script has Error')
   }}
   />
 
