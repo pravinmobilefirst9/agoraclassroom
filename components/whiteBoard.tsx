@@ -76,7 +76,7 @@ export default function Whiteboard() {
         uid: params.uid,
         uuid: "782dc000cd2d11ed96b663100d57c0b4",
         roomToken:
-          "NETLESSROOM_YWs9X0xpa1pnY3ltcVZHeFg2TiZleHBpcmVBdD0xNjc5OTg2NjkyNTEwJm5vbmNlPTE2Nzk5ODMwOTI1MTAwMCZyb2xlPTAmc2lnPTc4ZDg2OGYzZjdmMmUyNjE2YzBhNTc2NDRlYzQ5NjRlNzQ4ZDg4ZDMyNjE1MTQ1OThjODdlOTZhZGQwZmMzMjEmdXVpZD03ODJkYzAwMGNkMmQxMWVkOTZiNjYzMTAwZDU3YzBiNA",
+          "NETLESSROOM_YWs9X0xpa1pnY3ltcVZHeFg2TiZleHBpcmVBdD0xNjc5OTkyNjMxODcwJm5vbmNlPTE2Nzk5ODkwMzE4NzAwMCZyb2xlPTAmc2lnPTQ3Y2NiNzU5Y2ZjMWI4NTcyNTlkYmI1MGI4ZDY2MjRkMjgxMTA0ZTE5MGVmM2U1OWUyOTgyZjA0MWYxNDA2ZWQmdXVpZD03ODJkYzAwMGNkMmQxMWVkOTZiNjYzMTAwZDU3YzBiNA",
       },
       managerConfig: {
         cursor: true,
