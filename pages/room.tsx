@@ -30,6 +30,7 @@ const timestamp = new Date().getTime()
     <>
        
   <Script
+  defer 
   type="text/javascript"
   src={`https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=${timestamp}`}
   onLoad={() => {
@@ -40,6 +41,7 @@ const timestamp = new Date().getTime()
   }}
   />
   <Script
+  defer 
   type="text/javascript"
   src={`https://edu-sdk.vercel.app/js/AgoraRTC_N-4.14.0.js?v=${timestamp}`}
   onLoad={() => {
