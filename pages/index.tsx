@@ -25,6 +25,17 @@ export default function Home() {
 
   return (
     <>
+    <Script
+  defer 
+  type="text/javascript"
+  src={`https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=${timestamp}`}
+  onLoad={() => {
+    console.log('agora-rtm-sdk-1.5.1 Script has loaded')
+  }}
+  onError={() => {
+    console.log('agora-rtm-sdk-1.5.1 Script has Error')
+  }}
+  />
       <Script src="https://edu-sdk.vercel.app/js/lobby.js" />
       <header id="nav">
         <div className="nav--list">
@@ -34,7 +45,7 @@ export default function Home() {
             </h3>
            
         </div>
-        <div id="nav__links">
+        {/* <div id="nav__links">
           <Link className="nav__link" id="create__room__btn" href="/">
             Create Room
             <svg
@@ -47,7 +58,7 @@ export default function Home() {
               <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z" />
             </svg>
           </Link>
-        </div>
+        </div> */}
       </header>
       <main id="room__lobby__container">
         <div id="form__container">
