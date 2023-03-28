@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { WhiteWebSdk, RoomWhiteboard } from "white-react-sdk";
+//import { WhiteWebSdk, RoomWhiteboard } from "white-react-sdk";
 import { createFastboard, createUI } from "@netless/fastboard";
 // import { useFastboard, Fastboard } from "@netless/fastboard-react";
 import Script from "next/script";
