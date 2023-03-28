@@ -184,7 +184,7 @@ export default function Whiteboard() {
 
   return (
     <div>
-      {/ {whiteboardView} /}
+      {/* {whiteboardView} */}
       {/* <div
         id="whiteboard"
         className="white-board"
@@ -204,7 +204,7 @@ export default function Whiteboard() {
         id="app"
         style={{ width: "750px", height: "500px", border: "1px solid" }}
       ></div>
-      {/ <Fastboard app={apps} /> /}
+      {/* <Fastboard app={apps} /> */}
     </div>
   );
 }
