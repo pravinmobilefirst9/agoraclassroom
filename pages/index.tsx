@@ -25,17 +25,6 @@ export default function Home() {
 
   return (
     <>
-    <Script
-  defer 
-  type="text/javascript"
-  src={`https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=${timestamp}`}
-  onLoad={() => {
-    console.log('agora-rtm-sdk-1.5.1 Script has loaded')
-  }}
-  onError={() => {
-    console.log('agora-rtm-sdk-1.5.1 Script has Error')
-  }}
-  />
       <Script src="https://edu-sdk.vercel.app/js/lobby.js" />
       <header id="nav">
         <div className="nav--list">

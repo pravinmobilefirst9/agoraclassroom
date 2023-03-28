@@ -29,7 +29,17 @@ const timestamp = new Date().getTime()
   return (
     <>
        
-  
+  <Script
+  defer 
+  type="text/javascript"
+  src={`https://edu-sdk.vercel.app/js/agora-rtm-sdk-1.5.1.js?v=${timestamp}`}
+  onLoad={() => {
+    console.log('agora-rtm-sdk-1.5.1 Script has loaded')
+  }}
+  onError={() => {
+    console.log('agora-rtm-sdk-1.5.1 Script has Error')
+  }}
+  />
   <Script
   defer 
   type="text/javascript"
