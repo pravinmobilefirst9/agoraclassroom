@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-//import { WhiteWebSdk, RoomWhiteboard } from "white-react-sdk";
+import { WhiteWebSdk, RoomWhiteboard } from "white-react-sdk";
 import { createFastboard, createUI } from "@netless/fastboard";
 // import { useFastboard, Fastboard } from "@netless/fastboard-react";
 import Script from "next/script";
@@ -74,8 +74,9 @@ export default function Whiteboard() {
       },
       joinRoom: {
         uid: params.uid,
-        uuid: params.uuid,
-        roomToken: params.roomToken,
+        uuid: "782dc000cd2d11ed96b663100d57c0b4",
+        roomToken:
+          "NETLESSROOM_YWs9X0xpa1pnY3ltcVZHeFg2TiZleHBpcmVBdD0xNjc5OTg2NjkyNTEwJm5vbmNlPTE2Nzk5ODMwOTI1MTAwMCZyb2xlPTAmc2lnPTc4ZDg2OGYzZjdmMmUyNjE2YzBhNTc2NDRlYzQ5NjRlNzQ4ZDg4ZDMyNjE1MTQ1OThjODdlOTZhZGQwZmMzMjEmdXVpZD03ODJkYzAwMGNkMmQxMWVkOTZiNjYzMTAwZDU3YzBiNA",
       },
       managerConfig: {
         cursor: true,
