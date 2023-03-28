@@ -10,7 +10,12 @@ interface paramsType {
   roomToken: string;
 }
 
-export default function Whiteboard() {
+interface propType {
+  uuid: string | string[] | undefined;
+  roomData: any;
+}
+
+export default function Whiteboard(props: propType) {
   const sdkToken =
     "NETLESSSDK_YWs9X0xpa1pnY3ltcVZHeFg2TiZub25jZT01ZjYzNzRlMC1jOTdhLTExZWQtYmM3Zi1mNTJjMTZjNzkzYzYmcm9sZT0wJnNpZz0xYmMwNDM2ZTZkNmE4YzkyMjAyNmNjZjc4NTNlZGUyNTBiYWI3YWFmYmRlNDRkNzlmNjIxOTZkNDU4MTNkYTI5";
   const appIdentifier = "sSUHMLjHEe2Nx9_Oi854JA/wNOqW69GeIzR0w";
@@ -73,10 +78,9 @@ export default function Whiteboard() {
         region: region,
       },
       joinRoom: {
-        uid: params.uid,
-        uuid: "782dc000cd2d11ed96b663100d57c0b4",
-        roomToken:
-          "NETLESSROOM_YWs9X0xpa1pnY3ltcVZHeFg2TiZleHBpcmVBdD0xNjc5OTkyNjMxODcwJm5vbmNlPTE2Nzk5ODkwMzE4NzAwMCZyb2xlPTAmc2lnPTQ3Y2NiNzU5Y2ZjMWI4NTcyNTlkYmI1MGI4ZDY2MjRkMjgxMTA0ZTE5MGVmM2U1OWUyOTgyZjA0MWYxNDA2ZWQmdXVpZD03ODJkYzAwMGNkMmQxMWVkOTZiNjYzMTAwZDU3YzBiNA",
+        uid: Math.random().toString(36).slice(2),
+        uuid: props.uuid && typeof props.uuid === "string" ? props.uuid : "",
+        roomToken: props.roomData.whiteBoardToken,
       },
       managerConfig: {
         cursor: true,
