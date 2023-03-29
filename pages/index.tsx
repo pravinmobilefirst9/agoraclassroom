@@ -81,6 +81,7 @@ export default function Home() {
       uId: 10,
       roomId: Number(roomId),
       whiteBoardToken: params.roomToken,
+      whiteBoardUuid: "string",
     };
     const { data } = await axios.post(
       "https://agoramobilefirstapi-production.up.railway.app/api/set-platform-data",
