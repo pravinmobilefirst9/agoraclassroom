@@ -83,7 +83,7 @@ export default function Home() {
       />
       <Script
         type="text/javascript"
-        src={`https://edu-sdk.vercel.app/js/room_rtc_local.js?v=${timestamp}`}
+        src={`https://edu-sdk.vercel.app/js/room_rtc.js?v=${timestamp}`}
         onLoad={() => {
           console.log("room_rtc Script has loaded");
         }}
