@@ -31,20 +31,9 @@ interface propType {
 }
 
 const appId: string = "a9a93ac27e184ee4bd333586bc90eff9";
-const token: string | null =
-  "006a9a93ac27e184ee4bd333586bc90eff9IAC99KN7P6SMdcdShELdosaHowgBSe0FIXuYPDUqmHI8g+Lcsooh39v0IgDCL3CJ4nooZAQAAQDiF15kAgDiF15kAwDiF15kBADiF15k";
-// const uid = 2882341272;
+
 export default function VideoCallMain(props: propType) {
-  const router = useRouter();
-
-  //   const { sToken, sUid } = router.query;
-
-  //   const token: string = typeof sToken === "string" ? sToken : "";
-
-  //   const uid: string = typeof sUid === "string" ? sUid : "";
-  //   console.log("token", token, uid, typeof token, typeof uid);
   const [inCall, setInCall] = useState<boolean>(false);
-  //   const [channelName, setChannelName] = useState<string>("test1");
 
   useEffect(() => {
     console.log("window.innerHeight", window.innerHeight);
@@ -202,25 +191,38 @@ export default function VideoCallMain(props: propType) {
 
   const ChannelForm = () => {
     return (
-      <form className="join">
+      <form
+        className="join"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          background: "#e990c5",
+        }}
+      >
         {appId === "" && (
           <p style={{ color: "red" }}>
             Please enter your Agora App ID in App.tsx and refresh the page
           </p>
         )}
-        {/* <input
-          type="text"
-          placeholder="Enter Channel Name"
-          onChange={(e: any) => setChannelName(e.target.value)}
-          value={channelName}
-        /> */}
+        {/* <h1></h1> */}
         <button
           onClick={(e) => {
             e.preventDefault();
             setInCall(true);
           }}
+          style={{
+            height: "56px",
+            // width: "108px",
+            padding: "4px 20px",
+            fontSize: "24px",
+            margin: "auto",
+            borderRadius: "8px",
+            border: "none",
+          }}
         >
-          Join
+          Welcome To Skylone
         </button>
       </form>
     );
@@ -241,83 +243,15 @@ export default function VideoCallMain(props: propType) {
               <img src="/images/Logo.png" alt="" />
             </div>
             <div className="whiteboard__screen">
-              {/*<div className="whiteboard__screen__top">
-                <div className="backIcon__logo">
-                  <img src="/images/Frame 10.png" alt="" />
-                  <img
-                    className="whiteboard__logo"
-                    src="/images/Frame 6638.png"
-                    alt=""
-                  />
-                </div>
-                <div className="upload__message">
-                  <img src="/images/Group 11.png" alt="" />
-                  <img src="/images/Group 8.png" alt="" />
-                </div>
-
-                <div className="emptyDiv"></div>
-      </div>*/}
               {props?.roomData !== null && (
                 <Whiteboard roomData={props?.roomData} />
               )}
               <div className="screen__chat">
-                {/*<div className="screen">
-                  {dots}
-
-                  <div className="toolbar1">
-                    <div className="toolbar1__subDiv1">
-                      <img src="/images/Rectangle 8.png" alt="" />
-                    </div>
-                    <div className="toolbar1__subDiv2">
-                      <img src="/images/Frame 14.png" alt="" />
-                      <img src="/images/Frame 15.png" alt="" />
-                      <img src="/images/Frame 16.png" alt="" />
-                      <img src="/images/Frame 17.png" alt="" />
-                    </div>
-                  </div>
-                  <div className="toolbar2">
-                    <div className="toolbar2__subDiv1">
-                      <img src="/images/Frame.png" alt="" />
-                      <img src="/images/Rectangle 7.png" alt="" />
-                      <img src="/images/Frame (1).png" alt="" />
-                      <img src="/images/Line 1.png" alt="" />
-                      <img src="/images/Frame (2).png" alt="" />
-                      <img src="/images/Frame (3).png" alt="" />
-                    </div>
-                    <div className="toolbar2__subDiv2">
-                      <img src="/images/Frame (4).png" alt="" />
-                      <img src="/images/Frame (5).png" alt="" />
-                      <img src="/images/Frame (7).png" alt="" />
-                      <img src="/images/Frame (6).png" alt="" />
-                    </div>
-                  </div>
-                  <div className="pagination">
-                    <div style={{ border: "1px solid #7F56D9" }}>1</div>
-                    <div>2</div>
-                    <div>3</div>
-                    <div>4</div>
-                  </div>
-                  <div className="zoom">
-                    <img src="/images/Frame (9).png" alt="" />
-                    <p>62%</p>
-                    <img src="/images/Frame (10).png" alt="" />
-                  </div>
-                </div> */}
                 <div className="chat">
                   <div className="chat_content">
                     <div className="sentImages">
-                      {/* <img
-                        src="https://media.istockphoto.com/id/1291318636/photo/put-more-in-get-more-out.jpg?s=612x612&w=0&k=20&c=KRvn1x6r9x9GmYMLpW6AVZzkvOA0bmn14fKle-O6CVc="
-                        alt=""
-                      /> */}
                       <VideoCall />
                     </div>
-                    {/* <div className="sentImages">
-                      <img
-                        src="https://media.istockphoto.com/id/1163576185/photo/excited-happy-afro-american-man-looking-at-laptop-computer-screen-and-celebrating-the-win.jpg?s=612x612&w=0&k=20&c=xLRYAZAJwnqr9Ue1BPbx8rGxSW2gTAjohUFIqlJ7FzY="
-                        alt=""
-                      />
-                    </div> */}
                     <div className="saveAttachImageEnd">
                       <div className="saveMainDiv">
                         <div className="saveInnerDiv">
@@ -339,7 +273,10 @@ export default function VideoCallMain(props: propType) {
                         </div>
                       </div>
                       <div className="imageMainDiv">
-                        <div className="imageInnerDiv">
+                        <div
+                          className="imageInnerDiv"
+                          onClick={() => mute("video")}
+                        >
                           <img
                             src="/images/fluent_camera-24-regular.png"
                             alt=""
@@ -362,12 +299,8 @@ export default function VideoCallMain(props: propType) {
                       </div>
                     </div>
                   </div>
-                  <div className="type_message">
-                    <div>
-                      <ChatRoom />
-                      {/* <p>Type your message</p>
-                      <button>Send</button> */}
-                    </div>
+                  <div>
+                    <ChatRoom roomData={props.roomData} />
                   </div>
                 </div>
               </div>

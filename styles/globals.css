@@ -1,78 +1,3 @@
-:root {
-  --max-width: 1100px;
-  --border-radius: 12px;
-  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
-    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
-    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
-
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
-  --secondary-glow: radial-gradient(
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
-
-  --tile-start-rgb: 239, 245, 249;
-  --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
-
-  --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 180, 185, 188;
-  --card-border-rgb: 131, 134, 135;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-
-    --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
-
-    --tile-start-rgb: 2, 13, 46;
-    --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
-
-    --callout-rgb: 20, 20, 20;
-    --callout-border-rgb: 108, 108, 108;
-    --card-rgb: 100, 100, 100;
-    --card-border-rgb: 200, 200, 200;
-  }
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -86,25 +11,9 @@ body {
   overflow-x: hidden;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }
 
 #form__container {
@@ -227,10 +136,6 @@ a {
 }
 
 body {
-  background-color: #1a1a1a;
-  color: #fff;
-
-  font-size: 14px;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -785,6 +690,7 @@ a {
   height: 954px;
   position: relative;
   padding-bottom: 25px;
+  width: 100%;
 }
 
 .screen {
@@ -875,19 +781,19 @@ a {
 }
 
 .chat {
-  /* width: 25%; */
+  width: 100%;
   position: relative;
 }
 
 .chat_content {
   border-left: 1px solid #eaeaea;
-  height: calc(100% - 101px);
+  /* height: calc(100% - 101px); */
   padding-top: 14px;
 }
 
 .sentImages {
   width: 270px;
-  height: 177px;
+  /* height: 177px; */
   margin: 0 auto;
   margin-bottom: 14px;
   /* padding: 0 70px; */
@@ -954,10 +860,10 @@ a {
 }
 
 .type_message {
-  position: absolute;
+  /* position: absolute;
   bottom: 25px;
   left: 0;
-  right: 0;
+  right: 0; */
   height: 76px;
   background: #f4f4f4;
   border-radius: 0px 0px 20px 0px;
@@ -966,15 +872,14 @@ a {
   justify-content: center;
 }
 
-/* .type_message div {
+.type_message .chat-input-block {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-direction: column;
   width: 100%;
   padding-right: 20px;
   padding-left: 32px;
-} */
+}
 
 .type_message form {
   display: flex;
@@ -987,7 +892,6 @@ a {
 .type_message button {
   width: 67px;
   height: 38px;
-
   background: #6a0dad;
   border-radius: 4px;
   font-family: "Inter";
@@ -999,13 +903,16 @@ a {
   border: none;
 }
 
-.type_message p {
+.type_message input {
+  border: none;
+  background: none;
+  outline: none;
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
   line-height: 22px;
-  color: #d5d5d5;
+  /* color: #d5d5d5; */
 }
 
 .pagination {
@@ -1050,8 +957,16 @@ a {
 
 .message {
   color: #000;
+  width: fit-content;
+  background: rgb(167, 218, 201);
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin: 8px;
 }
-
+.user-self {
+  font-size: 15px;
+  font-weight: 700;
+}
 @media (max-width: 1200px) {
   .screen {
     width: 60%;
@@ -1100,6 +1015,10 @@ a {
     margin-left: 12px;
     margin-right: 12px;
     margin-bottom: 12px;
+  }
+
+  .whiteboard__screen .netless-window-manager-wrapper {
+    height: 100%;
   }
 
   .backIcon__logo {
