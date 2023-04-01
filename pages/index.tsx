@@ -2,6 +2,7 @@ import { useState } from "react";
 import Script from "next/script";
 import Link from "next/link";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 
 const sdkToken =
   "NETLESSSDK_YWs9X0xpa1pnY3ltcVZHeFg2TiZub25jZT01ZjYzNzRlMC1jOTdhLTExZWQtYmM3Zi1mNTJjMTZjNzkzYzYmcm9sZT0wJnNpZz0xYmMwNDM2ZTZkNmE4YzkyMjAyNmNjZjc4NTNlZGUyNTBiYWI3YWFmYmRlNDRkNzlmNjIxOTZkNDU4MTNkYTI5";
@@ -10,6 +11,13 @@ const region = "cn-hz";
 interface paramsType {
   uuid: string;
   roomToken: string;
+}
+
+interface savParamsType {
+  channel: string;
+  uuid: string;
+  roomToken: string;
+  videoToken: string;
 }
 
 export default function Home() {
@@ -37,7 +45,10 @@ export default function Home() {
           roomToken: roomToken,
         };
 
-        return handleSaveDetail(params);
+        return createVideoToken(params);
+      })
+      .then(function (data) {
+        return handleSaveDetail(data);
       });
   };
 
@@ -75,21 +86,36 @@ export default function Home() {
     });
   }
 
-  const handleSaveDetail = async (params: paramsType) => {
+  async function createVideoToken(param: paramsType) {
+    // let uid = uuidv4();
+    let obj = {
+      channelName: name,
+      uId: "0",
+    };
+
+    var url =
+      "https://agoramobilefirstapi-production.up.railway.app/api/rtc-token";
+    let { status, data } = await axios.post(url, obj);
+    console.log("data", data);
+    return { ...param, videoToken: data.key, channel: name };
+  }
+
+  const handleSaveDetail = async (params: savParamsType) => {
     const param = {
       displayName: name,
-      uId: 10,
+      uId: 0,
       roomId: Number(roomId),
       whiteBoardToken: params.roomToken,
-      whiteBoardUuid: "string",
+      whiteBoardUuid: params.uuid,
+      videoToken: params.videoToken,
     };
     const { data } = await axios.post(
       "https://agoramobilefirstapi-production.up.railway.app/api/set-platform-data",
       param
     );
-
+    console.log("dataaaaaaa", data);
     if (data?.message === "Created successfully!") {
-      window.location.href = `/room?room=${data?.id}&uuid=${params.uuid}`;
+      window.location.href = `/videoCallPage?room=${data?.id}`;
       sessionStorage.setItem("display_name", name);
     }
 
@@ -113,20 +139,6 @@ export default function Home() {
             <span>Virtual Classroom</span>
           </h3>
         </div>
-        {/* <div id="nav__links">
-          <Link className="nav__link" id="create__room__btn" href="/">
-            Create Room
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              fill="#ede0e0"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 13h-5v5h-2v-5h-5v-2h5v-5h2v5h5v2z" />
-            </svg>
-          </Link>
-        </div> */}
       </header>
       <main id="room__lobby__container">
         <div id="form__container">
