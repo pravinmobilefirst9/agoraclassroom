@@ -275,7 +275,7 @@ export default function VideoCallMain(props: propType) {
                       <div className="imageMainDiv">
                         <div
                           className="imageInnerDiv"
-                          onClick={() => mute("video")}
+                          //   onClick={() => mute("video")}
                         >
                           <img
                             src="/images/fluent_camera-24-regular.png"
