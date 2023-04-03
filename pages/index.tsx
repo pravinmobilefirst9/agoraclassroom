@@ -147,14 +147,14 @@ export default function Home() {
           </div>
           <form id="lobby__form">
             <div className="form__field__wrapper">
-              <label>Your Name</label>
+              <label>Room Name</label>
               <input
                 type="text"
                 name="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="Enter your display name..."
+                placeholder="Enter your room name..."
               />
             </div>
             <div className="form__field__wrapper">

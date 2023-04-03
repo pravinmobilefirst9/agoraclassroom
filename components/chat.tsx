@@ -85,6 +85,7 @@ export default function ChatRoom(props: propType) {
     setText("");
   };
 
+  const userName = sessionStorage.getItem("userName");
   return (
     <main>
       <div className="panel">
@@ -93,12 +94,10 @@ export default function ChatRoom(props: propType) {
             {messages.map((message: any, idx: any) => (
               <div key={idx} className="message">
                 {message.uid === uid && (
-                  <div className="user-self">
-                    {props.roomData.display_name}:&nbsp;
-                  </div>
+                  <div className="user-self">{"You"}:&nbsp;</div>
                 )}
                 {message.uid !== uid && (
-                  <div className="user-them">Them:&nbsp;</div>
+                  <div className="user-them">{"Sender"}:&nbsp;</div>
                 )}
                 <div className="text">{message.text}</div>
               </div>
