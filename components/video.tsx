@@ -12,6 +12,10 @@ import {
   createClient,
   createMicrophoneAndCameraTracks,
 } from "agora-rtc-react";
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 
 const ChatRoom = dynamic(() => import("../components/chat"), {
   ssr: false,
@@ -54,6 +58,7 @@ export default function VideoCallMain(props: propType) {
       // function to initialise the SDK
       let init = async () => {
         client.on("user-published", async (user, mediaType) => {
+          console.log("client", user);
           await client.subscribe(user, mediaType);
           console.log("subscribe success");
           if (mediaType === "video") {
@@ -91,12 +96,19 @@ export default function VideoCallMain(props: propType) {
           props.roomData.videoToken,
           null
         );
+        console.log(
+          "client",
+          client,
+          typeof client
+          // client.store
+        );
         if (tracks) await client.publish([tracks[0], tracks[1]]);
         setStart(true);
       };
 
       if (ready && tracks) {
         console.log("init ready");
+        // if()
         init();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,15 +141,18 @@ export default function VideoCallMain(props: propType) {
       setInCall(false);
     };
 
-    const mute = async () => {
-      await tracks[0].setEnabled(!trackState.audio);
-      setTrackState((ps) => {
-        return { ...ps, audio: !ps.audio };
-      });
-      // await tracks[1].setEnabled(!trackState.video);
-      // setTrackState((ps) => {
-      //   return { ...ps, video: !ps.video };
-      // });
+    const mute = async (type: "audio" | "video") => {
+      if (type === "audio") {
+        await tracks[0].setEnabled(!trackState.audio);
+        setTrackState((ps) => {
+          return { ...ps, audio: !ps.audio };
+        });
+      } else if (type === "video") {
+        await tracks[1].setEnabled(!trackState.video);
+        setTrackState((ps) => {
+          return { ...ps, video: !ps.video };
+        });
+      }
     };
 
     return (
@@ -145,8 +160,14 @@ export default function VideoCallMain(props: propType) {
         <div className="sentImages">
           <div id="videos" className="video-wrapper">
             <div className="video-block">
-              <div className="video-mute-btn" onClick={() => mute()}>
-                <img src="/images/mic-off.png" alt="" />
+              <div
+                className="video-mute-btn video-mute-btn-first"
+                onClick={() => mute("video")}
+              >
+                {trackState?.video ? <VideocamIcon /> : <VideocamOffIcon />}
+              </div>
+              <div className="video-mute-btn" onClick={() => mute("audio")}>
+                {trackState?.audio ? <MicIcon /> : <MicOffIcon />}
               </div>
               <AgoraVideoPlayer
                 className="vid"
@@ -159,9 +180,6 @@ export default function VideoCallMain(props: propType) {
                 if (user.videoTrack) {
                   return (
                     <div className="video-block" key={user.uid}>
-                      <div className="video-mute-btn video-mute-btn-2">
-                        <img src="/images/mic-off.png" alt="" />
-                      </div>
                       <AgoraVideoPlayer
                         className="vid"
                         // style={{ width: "150px", height: "150px" }}
@@ -272,6 +290,8 @@ export default function VideoCallMain(props: propType) {
           alignItems: "center",
           height: "100vh",
           background: "#e990c5",
+          flexDirection: "column",
+          gap: "20px",
         }}
       >
         {appId === "" && (
@@ -300,7 +320,7 @@ export default function VideoCallMain(props: propType) {
             // width: "108px",
             padding: "4px 20px",
             fontSize: "24px",
-            margin: "auto",
+            // margin: "auto",
             borderRadius: "8px",
             border: "none",
           }}

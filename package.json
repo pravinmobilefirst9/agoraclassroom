@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.15",
     "@netless/fastboard": "^0.3.7",
     "@netless/window-manager": "^0.4.55",
     "@types/node": "18.15.5",

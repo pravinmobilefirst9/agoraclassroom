@@ -19,11 +19,13 @@ export default function ChatRoom(props: propType) {
   const [messages, setMessages] = useState<any>([]);
   const [text, setText] = useState("");
   const [channel, setChannel] = useState<any>(null);
-  const [uid] = useState(uuidv4());
+  const [uid] = useState(sessionStorage.getItem("userName"));
 
   const appendMessage = (message: any) => {
     setMessages((messages: any) => [...messages, message]);
   };
+
+  console.log("uidddddddddddddd", sessionStorage.getItem("userName"));
 
   async function fetchRTMToken() {
     var url = `https://agoramobilefirstapi-production.up.railway.app/api/rtm-token/${uid}`;
@@ -31,12 +33,11 @@ export default function ChatRoom(props: propType) {
     let { data } = await axios.get(url);
     return { token: data?.key, uid: uid };
   }
-
-  useEffect(() => {
+  +useEffect(() => {
     fetchRTMToken().then(function (response) {
       const connect = async () => {
         await client.login({
-          uid: response?.uid,
+          uid: response?.uid !== null ? response?.uid : "",
           token: response?.token,
         });
         const channel = await client.createChannel(props.roomData.display_name);
@@ -94,10 +95,10 @@ export default function ChatRoom(props: propType) {
             {messages.map((message: any, idx: any) => (
               <div key={idx} className="message">
                 {message.uid === uid && (
-                  <div className="user-self">{"You"}:&nbsp;</div>
+                  <div className="user-self">{message.uid}:&nbsp;</div>
                 )}
                 {message.uid !== uid && (
-                  <div className="user-them">{"Sender"}:&nbsp;</div>
+                  <div className="user-them">{message.uid}:&nbsp;</div>
                 )}
                 <div className="text">{message.text}</div>
               </div>

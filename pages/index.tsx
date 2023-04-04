@@ -115,7 +115,7 @@ export default function Home() {
     );
     console.log("dataaaaaaa", data);
     if (data?.message === "Created successfully!") {
-      window.location.href = `/videoCallPage?room=${data?.id}`;
+      // window.location.href = `/videoCallPage?room=${data?.id}`;
       sessionStorage.setItem("display_name", name);
     }
 
