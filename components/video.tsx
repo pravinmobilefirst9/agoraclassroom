@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import {
   ClientConfig,
@@ -16,6 +16,7 @@ import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ChatRoom = dynamic(() => import("../components/chat"), {
   ssr: false,
@@ -38,11 +39,18 @@ const appId: string = "a9a93ac27e184ee4bd333586bc90eff9";
 
 export default function VideoCallMain(props: propType) {
   const [inCall, setInCall] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
 
   useEffect(() => {
     console.log("window.innerHeight", window.innerHeight);
-  }, []);
+    if (inCall) {
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 10000);
+    }
+  }, [inCall]);
 
   const useClient = createClient(config);
   const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
@@ -192,7 +200,7 @@ export default function VideoCallMain(props: propType) {
           </div>
         </div>
         <div className="saveAttachImageEnd">
-          <div className="saveMainDiv">
+          {/* <div className="saveMainDiv">
             <div className="saveInnerDiv">
               <img src="/images/Frame (8).png" alt="" />
             </div>
@@ -215,7 +223,7 @@ export default function VideoCallMain(props: propType) {
             <div className="imageText">
               <p>img</p>
             </div>
-          </div>
+          </div> */}
           <div
             className="endMainDiv"
             style={{ cursor: "pointer" }}
@@ -341,27 +349,41 @@ export default function VideoCallMain(props: propType) {
     <>
       {inCall ? (
         <>
-          <div className="whiteboard">
-            <div className="whiteboard__top">
-              <img src="/images/Logo.png" alt="" />
+          {isLoading ? (
+            <div
+              style={{
+                width: "100%",
+                height: "100vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress />
             </div>
-            <div className="whiteboard__screen">
-              {props?.roomData !== null && (
-                <Whiteboard roomData={props?.roomData} />
-              )}
-              <div className="screen__chat">
-                <div className="chat">
-                  <div className="chat_content">
-                    {/*  */}
-                    <VideoCall />
-                  </div>
-                  <div>
-                    <ChatRoom roomData={props.roomData} />
+          ) : (
+            <div className="whiteboard">
+              {/* <div className="whiteboard__top">
+              <img src="/images/Logo.png" alt="" />
+            </div> */}
+              <div className="whiteboard__screen">
+                {props?.roomData !== null && (
+                  <Whiteboard roomData={props?.roomData} />
+                )}
+                <div className="screen__chat">
+                  <div className="chat">
+                    <div className="chat_content">
+                      {/*  */}
+                      <VideoCall />
+                    </div>
+                    <div>
+                      <ChatRoom roomData={props.roomData} />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </>
       ) : (
         <ChannelForm />
