@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 // import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import {
+import AgoraRTC, {
   ClientConfig,
   IAgoraRTCRemoteUser,
   ICameraVideoTrack,
   IMicrophoneAudioTrack,
 } from "agora-rtc-sdk-ng";
+
+// import AgoraRTC from "agora-rtc-sdk";
 import {
   AgoraVideoPlayer,
   createClient,
@@ -17,6 +19,7 @@ import MicOffIcon from "@mui/icons-material/MicOff";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import CircularProgress from "@mui/material/CircularProgress";
+import ScreenShareIcon from "@mui/icons-material/ScreenShare";
 
 const ChatRoom = dynamic(() => import("../components/chat"), {
   ssr: false,
@@ -35,15 +38,16 @@ interface propType {
   roomData: any;
 }
 
-const appId: string = "a9a93ac27e184ee4bd333586bc90eff9";
+const appId: string = "b147b642a2af4b89980e7c016458fd16";
 
 export default function VideoCallMain(props: propType) {
   const [inCall, setInCall] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userName, setUserName] = useState<string>("");
+  const [screenTrack, setScreenTrack] = useState<any>(null);
+  const [isScreenSharing, setIsScreenSharing] = useState(false);
 
   useEffect(() => {
-    console.log("window.innerHeight", window.innerHeight);
     if (inCall) {
       setIsLoading(true);
       setTimeout(() => {
@@ -51,6 +55,42 @@ export default function VideoCallMain(props: propType) {
       }, 10000);
     }
   }, [inCall]);
+
+  const initStreams = async () => {
+    // const clientSC = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+    // clientSC.init(appId);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const client = useClient();
+    // initialize the screen share track
+
+    const screenConfig = {
+      encoderConfig: {
+        width: 1920,
+        height: 1080,
+        frameRate: 30,
+        bitrate: 1500,
+        orientationMode: 1,
+      },
+      appID: appId,
+    };
+
+    const withAudio = "auto"; // Enable, disable, or auto.
+
+    const screenTrack = await AgoraRTC.createScreenVideoTrack(
+      screenConfig,
+      withAudio
+    );
+    // await clientSC.join('17a8bd5c2fe04b5db9c64f6c3689c041', `${props.roomData.display_name}sc`, null, null);
+    setScreenTrack(screenTrack);
+    console.log("screenTrack", screenTrack);
+    client.unpublish();
+    client.publish(screenTrack);
+
+    client.on("stream-added", (evt: { stream: IAgoraRTCRemoteUser }) => {
+      console.log("New stream added: " + 1);
+      client.subscribe(evt.stream, "video");
+    });
+  };
 
   const useClient = createClient(config);
   const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
@@ -104,13 +144,17 @@ export default function VideoCallMain(props: propType) {
           props.roomData.videoToken,
           null
         );
-        console.log(
-          "client",
-          client,
-          typeof client
-          // client.store
-        );
-        if (tracks) await client.publish([tracks[0], tracks[1]]);
+        console.log("stop sharingggggggggggggggggggggg outside");
+        client.on("stopScreenSharing", () => {
+          console.log("stop sharingggggggggggggggggggggg");
+          client.unpublish();
+          setIsScreenSharing(false);
+        });
+
+        if (!isScreenSharing && tracks) {
+          console.log("publish isScreenSharing", isScreenSharing);
+          await client.publish(!isScreenSharing && [tracks[0], tracks[1]]);
+        }
         setStart(true);
       };
 
@@ -120,7 +164,7 @@ export default function VideoCallMain(props: propType) {
         init();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [, /* channelName */ client, ready, tracks]);
+    }, [, /* channelName */ client, ready, tracks, isScreenSharing]);
     return (
       <div className="App">
         {/* {ready && tracks && (
@@ -183,7 +227,7 @@ export default function VideoCallMain(props: propType) {
                 videoTrack={tracks[1]}
               />
             </div>
-            {users.length > 0 &&
+            {users.length > 0 ? (
               users.map((user) => {
                 if (user.videoTrack) {
                   return (
@@ -196,7 +240,12 @@ export default function VideoCallMain(props: propType) {
                     </div>
                   );
                 } else return null;
-              })}
+              })
+            ) : (
+              <div className="vid">
+                <img src="/images/placeholder.png" alt="" />
+              </div>
+            )}
           </div>
         </div>
         <div className="saveAttachImageEnd">
@@ -215,15 +264,21 @@ export default function VideoCallMain(props: propType) {
             <div className="attachText">
               <p>Attach</p>
             </div>
-          </div>
+          </div>*/}
           <div className="imageMainDiv">
-            <div className="imageInnerDiv">
-              <img src="/images/fluent_camera-24-regular.png" alt="" />
+            <div
+              className="imageInnerDiv"
+              onClick={() => {
+                initStreams();
+                setIsScreenSharing(true);
+              }}
+            >
+              <ScreenShareIcon />
             </div>
             <div className="imageText">
               <p>img</p>
             </div>
-          </div> */}
+          </div>
           <div
             className="endMainDiv"
             style={{ cursor: "pointer" }}
@@ -367,6 +422,14 @@ export default function VideoCallMain(props: propType) {
               <img src="/images/Logo.png" alt="" />
             </div> */}
               <div className="whiteboard__screen">
+                {/* {screenTrack && (
+                  <video
+                    ref={(v) => {
+                      // this.localVideo = v;
+                      screenTrack.play(v);
+                    }}
+                  />
+                )} */}
                 {props?.roomData !== null && (
                   <Whiteboard roomData={props?.roomData} />
                 )}

@@ -6,7 +6,7 @@ interface propType {
   roomData: any;
 }
 
-const APP_ID = "a9a93ac27e184ee4bd333586bc90eff9";
+const APP_ID = "b147b642a2af4b89980e7c016458fd16";
 // const CHANNEL = "wdj";
 
 let client = AgoraRTM.createInstance(APP_ID);

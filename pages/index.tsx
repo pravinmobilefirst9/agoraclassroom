@@ -5,8 +5,8 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
 const sdkToken =
-  "NETLESSSDK_YWs9X0xpa1pnY3ltcVZHeFg2TiZub25jZT01ZjYzNzRlMC1jOTdhLTExZWQtYmM3Zi1mNTJjMTZjNzkzYzYmcm9sZT0wJnNpZz0xYmMwNDM2ZTZkNmE4YzkyMjAyNmNjZjc4NTNlZGUyNTBiYWI3YWFmYmRlNDRkNzlmNjIxOTZkNDU4MTNkYTI5";
-const appIdentifier = "sSUHMLjHEe2Nx9_Oi854JA/wNOqW69GeIzR0w";
+  "NETLESSSDK_YWs9WDdhMzFxU3FQTkF0c3hOSyZub25jZT1lYjExNjBjMC1kNTA5LTExZWQtOTlkYy01MTgzNDAyNjk3N2Mmcm9sZT0wJnNpZz1lY2I4YWZjMjY5NjY5ZmIzY2ZjODhiMTI3MjNiZWEyMjBkMmQ1ZmE5NzIxMzI0NDQwODBmYTk0YjQ4MTI0MmNh";
+const appIdentifier = "4GEE8NUJEe2Z3FGDQCaXfA/v9_1Ayyl_ViGZg";
 const region = "cn-hz";
 interface paramsType {
   uuid: string;
