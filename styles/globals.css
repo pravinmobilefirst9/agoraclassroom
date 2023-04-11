@@ -658,16 +658,16 @@ a {
   padding-bottom: 15px;
 }
 
-.whiteboard__screen {
+/* .whiteboard__screen {
   display: flex;
   /* margin-left: 30px;
-  margin-right: 30px; */
-  margin-bottom: 76px;
-  height: 100vh;
-  background: #fdfcff;
-  box-shadow: 0px 29px 60px rgba(26, 50, 99, 0.24);
-  /* border-radius: 20px; */
-}
+  margin-right: 30px; 
+margin-bottom: 76px;
+height: 100vh;
+background: #fdfcff;
+box-shadow: 0px 29px 60px rgba(26, 50, 99, 0.24);
+/* border-radius: 20px; 
+} */
 
 .whiteboard__screen__top {
   height: 95px;
@@ -691,13 +691,13 @@ a {
   margin-right: 5px;
 }
 
-.screen__chat {
+/* .screen__chat {
   display: flex;
-  /* height: 954px; */
+  /* height: 954px; 
   position: relative;
   padding-bottom: 25px;
   width: 100%;
-}
+} */
 
 .screen {
   width: 75%;
@@ -786,16 +786,16 @@ a {
   padding-top: 30px;
 }
 
-.chat {
+/* .chat {
   width: 100%;
   position: relative;
-}
+} */
 
-.chat_content {
+/* .chat_content {
   border-left: 1px solid #eaeaea;
-  /* height: calc(100% - 101px); */
-  /* padding-top: 14px; */
-}
+  /* height: calc(100% - 101px); 
+/* padding-top: 14px; 
+} */
 
 .sentImages {
   width: 100%;
@@ -868,8 +868,8 @@ a {
 .type_message {
   position: fixed;
   bottom: 0;
-  width: 26vw;
-  height: 76px;
+  width: 25%;
+  height: 52px;
   background: #f4f4f4;
   border-radius: 0px 0px 20px 0px;
   display: flex;
@@ -1001,6 +1001,10 @@ a {
   object-fit: contain;
 }
 
+.vid video {
+  object-fit: contain !important;
+}
+
 .video-mute-btn-first {
   right: 56px !important;
   border-radius: 0 !important;
@@ -1042,8 +1046,9 @@ a {
   margin-bottom: -30px;
 } */
 
-.whiteboard__screen .netless-window-manager-wrapper {
+.netless-window-manager-wrapper {
   height: 120vh !important;
+  width: 100% !important;
 }
 
 .netless-window-manager-sizer:before,
@@ -1061,9 +1066,9 @@ a {
     width: 60%;
   }
 
-  .chat {
+  /* .chat {
     width: 40%;
-  }
+  } */
 }
 
 @media (max-width: 800px) {
@@ -1086,9 +1091,9 @@ a {
 }
 
 @media (max-width: 500px) {
-  .chat {
+  /* .chat {
     display: none;
-  }
+  } */
 
   .screen {
     width: 100%;
@@ -1100,11 +1105,11 @@ a {
     padding-bottom: 12px;
   }
 
-  .whiteboard__screen {
+  /* .whiteboard__screen {
     margin-left: 12px;
     margin-right: 12px;
     margin-bottom: 12px;
-  }
+  } */
 
   .backIcon__logo {
     margin-left: 5px;
@@ -1189,4 +1194,12 @@ a {
   .whiteboard__screen__top {
     height: 50px;
   }
+}
+.user_form_input {
+  width: 450px;
+  height: 42px;
+  padding: 8px;
+  border-radius: 8px;
+  outline: none;
+  border: 1px solid gray;
 }

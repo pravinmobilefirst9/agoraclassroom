@@ -1,5 +1,4 @@
 import AgoraRTM from "agora-rtm-sdk";
-import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 
 interface propType {
@@ -7,7 +6,6 @@ interface propType {
 }
 
 const APP_ID = "b147b642a2af4b89980e7c016458fd16";
-// const CHANNEL = "wdj";
 
 let client = AgoraRTM.createInstance(APP_ID);
 
@@ -24,8 +22,6 @@ export default function ChatRoom(props: propType) {
   const appendMessage = (message: any) => {
     setMessages((messages: any) => [...messages, message]);
   };
-
-  console.log("uidddddddddddddd", sessionStorage.getItem("userName"));
 
   async function fetchRTMToken() {
     var url = `https://agoramobilefirstapi-production.up.railway.app/api/rtm-token/${uid}`;
@@ -86,42 +82,35 @@ export default function ChatRoom(props: propType) {
     setText("");
   };
 
-  const userName = sessionStorage.getItem("userName");
   return (
-    <main>
-      <div className="panel">
-        <div className="messages" ref={messagesRef}>
-          <div className="inner">
-            {messages.map((message: any, idx: any) => (
-              <div key={idx} className="message">
-                {message.uid === uid && (
-                  <div className="user-self">{message.uid}:&nbsp;</div>
-                )}
-                {message.uid !== uid && (
-                  <div className="user-them">{message.uid}:&nbsp;</div>
-                )}
-                <div className="text">{message.text}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* <input value={text} onChange={(e) => setText(e.target.value)} />
-          <button>+</button> */}
-        <div className="type_message">
-          <form onSubmit={sendMessage}>
-            <div className="chat-input-block">
-              <input
-                placeholder="Type your message"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-              />
-              <button>Send</button>
+    <div className="panel">
+      <div className="messages" ref={messagesRef}>
+        <div className="inner">
+          {messages.map((message: any, idx: any) => (
+            <div key={idx} className="message">
+              {message.uid === uid && (
+                <div className="user-self">{message.uid}:&nbsp;</div>
+              )}
+              {message.uid !== uid && (
+                <div className="user-them">{message.uid}:&nbsp;</div>
+              )}
+              <div className="text">{message.text}</div>
             </div>
-          </form>
+          ))}
         </div>
-        {/* </form> */}
       </div>
-    </main>
+      <div className="type_message">
+        <form onSubmit={sendMessage}>
+          <div className="chat-input-block">
+            <input
+              placeholder="Type your message"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <button>Send</button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }

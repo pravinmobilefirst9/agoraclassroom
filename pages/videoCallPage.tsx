@@ -30,8 +30,10 @@ export default function VideoCallPage() {
   };
 
   return (
-    <div style={{ height: "100vh" }}>
-      <VideoCall roomData={roomData} /* uuid={uuid} */ />
-    </div>
+    <>
+      <div style={{ height: "100vh" }}>
+        <VideoCall roomData={roomData} /* uuid={uuid} */ />
+      </div>
+    </>
   );
 }

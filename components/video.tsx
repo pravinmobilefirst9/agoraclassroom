@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import AgoraRTC, {
   ClientConfig,
@@ -7,8 +6,8 @@ import AgoraRTC, {
   ICameraVideoTrack,
   IMicrophoneAudioTrack,
 } from "agora-rtc-sdk-ng";
+import axios from "axios";
 
-// import AgoraRTC from "agora-rtc-sdk";
 import {
   AgoraVideoPlayer,
   createClient,
@@ -20,6 +19,7 @@ import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import CircularProgress from "@mui/material/CircularProgress";
 import ScreenShareIcon from "@mui/icons-material/ScreenShare";
+import { Grid } from "@mui/material";
 
 const ChatRoom = dynamic(() => import("../components/chat"), {
   ssr: false,
@@ -46,6 +46,7 @@ export default function VideoCallMain(props: propType) {
   const [userName, setUserName] = useState<string>("");
   const [screenTrack, setScreenTrack] = useState<any>(null);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
+  const [role, setRole] = useState<string>("Teacher");
 
   useEffect(() => {
     if (inCall) {
@@ -95,8 +96,17 @@ export default function VideoCallMain(props: propType) {
   const useClient = createClient(config);
   const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const client = useClient();
+    client.on("stopScreenSharing", () => {
+      console.log("stop sharingggggggggggggggggggggg");
+      client.unpublish();
+      setIsScreenSharing(false);
+    });
+  }, [useClient]);
+
   const VideoCall = () => {
-    // const { setInCall, channelName } = props;
     const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
     const [start, setStart] = useState<boolean>(false);
     const client = useClient();
@@ -144,27 +154,25 @@ export default function VideoCallMain(props: propType) {
           props.roomData.videoToken,
           null
         );
-        console.log("stop sharingggggggggggggggggggggg outside");
-        client.on("stopScreenSharing", () => {
-          console.log("stop sharingggggggggggggggggggggg");
-          client.unpublish();
-          setIsScreenSharing(false);
-        });
-
+        console.log(
+          "stop sharingggggggggggggggggggggg outside",
+          client,
+          tracks
+        );
         if (!isScreenSharing && tracks) {
           console.log("publish isScreenSharing", isScreenSharing);
-          await client.publish(!isScreenSharing && [tracks[0], tracks[1]]);
+          // client.unpublish();
+          await client.publish([tracks[0], tracks[1]]);
         }
         setStart(true);
       };
 
       if (ready && tracks) {
         console.log("init ready");
-        // if()
         init();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [, /* channelName */ client, ready, tracks, isScreenSharing]);
+    }, [, /* channelName */ client, ready, tracks /* isScreenSharing */]);
     return (
       <div className="App">
         {/* {ready && tracks && (
@@ -221,11 +229,7 @@ export default function VideoCallMain(props: propType) {
               <div className="video-mute-btn" onClick={() => mute("audio")}>
                 {trackState?.audio ? <MicIcon /> : <MicOffIcon />}
               </div>
-              <AgoraVideoPlayer
-                className="vid"
-                // style={{ width: "150px", height: "150px" }}
-                videoTrack={tracks[1]}
-              />
+              <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
             </div>
             {users.length > 0 ? (
               users.map((user) => {
@@ -234,7 +238,6 @@ export default function VideoCallMain(props: propType) {
                     <div className="video-block" key={user.uid}>
                       <AgoraVideoPlayer
                         className="vid"
-                        // style={{ width: "150px", height: "150px" }}
                         videoTrack={user.videoTrack}
                       />
                     </div>
@@ -249,22 +252,6 @@ export default function VideoCallMain(props: propType) {
           </div>
         </div>
         <div className="saveAttachImageEnd">
-          {/* <div className="saveMainDiv">
-            <div className="saveInnerDiv">
-              <img src="/images/Frame (8).png" alt="" />
-            </div>
-            <div className="saveText">
-              <p>Save</p>
-            </div>
-          </div>
-          <div className="attachMainDiv">
-            <div className="attachInnerDiv">
-              <img src="/images/ant-design_paper-clip-outlined.png" alt="" />
-            </div>
-            <div className="attachText">
-              <p>Attach</p>
-            </div>
-          </div>*/}
           <div className="imageMainDiv">
             <div
               className="imageInnerDiv"
@@ -296,51 +283,22 @@ export default function VideoCallMain(props: propType) {
     );
   };
 
-  const Controls = (props: { tracks: any; setStart: any; setInCall: any }) => {
-    const client = useClient();
-    const { tracks, setStart, setInCall } = props;
-    const [trackState, setTrackState] = useState({ video: true, audio: true });
-
-    const mute = async (type: "audio" | "video") => {
-      if (type === "audio") {
-        await tracks[0].setEnabled(!trackState.audio);
-        setTrackState((ps) => {
-          return { ...ps, audio: !ps.audio };
-        });
-      } else if (type === "video") {
-        await tracks[1].setEnabled(!trackState.video);
-        setTrackState((ps) => {
-          return { ...ps, video: !ps.video };
-        });
-      }
+  const handleWelcome = async (e: any) => {
+    e.preventDefault();
+    const params = {
+      classroom_id: 5,
+      username: userName,
+      usertype: role,
     };
-
-    const leaveChannel = async () => {
-      await client.leave();
-      client.removeAllListeners();
-      tracks[0].close();
-      tracks[1].close();
-      setStart(false);
-      setInCall(false);
-    };
-
-    return (
-      <div className="controls">
-        <p
-          className={trackState.audio ? "on" : ""}
-          onClick={() => mute("audio")}
-        >
-          {trackState.audio ? "MuteAudio" : "UnmuteAudio"}
-        </p>
-        <p
-          className={trackState.video ? "on" : ""}
-          onClick={() => mute("video")}
-        >
-          {trackState.video ? "MuteVideo" : "UnmuteVideo"}
-        </p>
-        {<p onClick={() => leaveChannel()}>Leave</p>}
-      </div>
+    const { data } = await axios.post(
+      "https://agoramobilefirstapi-production-122e.up.railway.app/api/set-user-data",
+      params
     );
+    if (data?.message === "User created successfully!") {
+      sessionStorage.setItem("userName", userName);
+      setUserName("");
+      setInCall(true);
+    }
   };
 
   const ChannelForm = () => {
@@ -362,7 +320,6 @@ export default function VideoCallMain(props: propType) {
             Please enter your Agora App ID in App.tsx and refresh the page
           </p>
         )}
-        {/* <h1></h1> */}
         <input
           placeholder="Enter your name"
           type="text"
@@ -370,20 +327,25 @@ export default function VideoCallMain(props: propType) {
           onChange={(e) => {
             setUserName(e.target.value);
           }}
+          className="user_form_input"
         />
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            sessionStorage.setItem("userName", userName);
-            setUserName("");
-            setInCall(true);
+        <select
+          placeholder="Select Role"
+          value={role}
+          onChange={(e) => {
+            setRole(e.target.value);
           }}
+          className="user_form_input"
+        >
+          <option value={"Teacher"}>Teacher</option>
+          <option value={"Student"}>Student</option>
+        </select>
+        <button
+          onClick={(e) => handleWelcome(e)}
           style={{
             height: "56px",
-            // width: "108px",
             padding: "4px 20px",
             fontSize: "24px",
-            // margin: "auto",
             borderRadius: "8px",
             border: "none",
           }}
@@ -417,35 +379,31 @@ export default function VideoCallMain(props: propType) {
               <CircularProgress />
             </div>
           ) : (
-            <div className="whiteboard">
-              {/* <div className="whiteboard__top">
-              <img src="/images/Logo.png" alt="" />
-            </div> */}
-              <div className="whiteboard__screen">
-                {/* {screenTrack && (
-                  <video
-                    ref={(v) => {
-                      // this.localVideo = v;
-                      screenTrack.play(v);
-                    }}
-                  />
-                )} */}
-                {props?.roomData !== null && (
-                  <Whiteboard roomData={props?.roomData} />
-                )}
-                <div className="screen__chat">
-                  <div className="chat">
-                    <div className="chat_content">
-                      {/*  */}
-                      <VideoCall />
-                    </div>
-                    <div>
-                      <ChatRoom roomData={props.roomData} />
-                    </div>
-                  </div>
-                </div>
+            <>
+              <div className="whiteboard">
+                <Grid container>
+                  {/* <div className="whiteboard__screen"> */}
+                  <Grid item xs={9}>
+                    {props?.roomData !== null && (
+                      <Whiteboard roomData={props?.roomData} />
+                    )}
+                  </Grid>
+                  <Grid item xs={3}>
+                    {/* <div className="screen__chat"> */}
+                    {/* <div className="chat"> */}
+                    {/* <div className="chat_content"> */}
+                    <VideoCall />
+                    {/* </div> */}
+                    {/* <div> */}
+                    <ChatRoom roomData={props.roomData} />
+                    {/* </div> */}
+                    {/* </div> */}
+                    {/* </div> */}
+                  </Grid>
+                  {/* </div> */}
+                </Grid>
               </div>
-            </div>
+            </>
           )}
         </>
       ) : (

@@ -1,12 +1,9 @@
 import { useState } from "react";
 import Script from "next/script";
-import Link from "next/link";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
 const sdkToken =
   "NETLESSSDK_YWs9WDdhMzFxU3FQTkF0c3hOSyZub25jZT1lYjExNjBjMC1kNTA5LTExZWQtOTlkYy01MTgzNDAyNjk3N2Mmcm9sZT0wJnNpZz1lY2I4YWZjMjY5NjY5ZmIzY2ZjODhiMTI3MjNiZWEyMjBkMmQ1ZmE5NzIxMzI0NDQwODBmYTk0YjQ4MTI0MmNh";
-const appIdentifier = "4GEE8NUJEe2Z3FGDQCaXfA/v9_1Ayyl_ViGZg";
 const region = "cn-hz";
 interface paramsType {
   uuid: string;
@@ -23,32 +20,33 @@ interface savParamsType {
 export default function Home() {
   const [name, setName] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
+  const [sessionTime, setSessionTime] = useState<string>("");
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    if (name === "" || roomId === "") {
+    if (name === "" || roomId === "" || sessionTime === "") {
       alert("Please fill the data of name and room id to continue.");
       return false;
     }
     var roomUUID = "";
     createRoom()
       .then(function (roomJSON) {
-        // The room is created successfully, get the roomJSON describing the content of the room
         roomUUID = roomJSON.uuid;
         return createRoomToken(roomUUID);
       })
       .then(function (roomToken) {
-        // The roomToken of the room has been checked out
         let params: paramsType = {
           uuid: roomUUID,
           roomToken: roomToken,
         };
-
         return createVideoToken(params);
       })
       .then(function (data) {
         return handleSaveDetail(data);
+      })
+      .then(function (data) {
+        return handleSaveClassroom(data);
       });
   };
 
@@ -87,7 +85,6 @@ export default function Home() {
   }
 
   async function createVideoToken(param: paramsType) {
-    // let uid = uuidv4();
     let obj = {
       channelName: name,
       uId: "0",
@@ -95,7 +92,7 @@ export default function Home() {
 
     var url =
       "https://agoramobilefirstapi-production.up.railway.app/api/rtc-token";
-    let { status, data } = await axios.post(url, obj);
+    let { data } = await axios.post(url, obj);
     console.log("data", data);
     return { ...param, videoToken: data.key, channel: name };
   }
@@ -114,14 +111,30 @@ export default function Home() {
       param
     );
     console.log("dataaaaaaa", data);
-    if (data?.message === "Created successfully!") {
-      window.location.href = `/videoCallPage?room=${data?.id}`;
-      sessionStorage.setItem("display_name", name);
-    }
-
-    console.log("data", data);
+    return { ...params, data: data };
   };
 
+  const handleSaveClassroom = async (params: any) => {
+    let date = new Date(sessionTime);
+    date.setHours(date.getHours() + 1);
+    let endTime = date.toISOString().slice(0, 16);
+
+    const param = {
+      description: "demo testing",
+      start_time: `${sessionTime}:00.000Z`,
+      end_time: `${endTime}:00.000Z`,
+      room_id: params.data.id,
+      class_link: `${window.location.origin}/videoCallPage?room=${params?.data?.id}`,
+    };
+    const { data } = await axios.post(
+      "https://agoramobilefirstapi-production-122e.up.railway.app/api/set-classroom-data",
+      param
+    );
+    if (data?.message === "Classroom created successfully!") {
+      window.location.href = `/videoCallPage?room=${params?.data?.id}&classId=${data?.id}`;
+      sessionStorage.setItem("display_name", name);
+    }
+  };
   return (
     <>
       <Script
@@ -166,6 +179,17 @@ export default function Home() {
                 onChange={(e) => setRoomId(e.target.value)}
                 required
                 placeholder="Enter room id..."
+              />
+            </div>
+            <div className="form__field__wrapper">
+              <label>Session Time</label>
+              <input
+                type="datetime-local"
+                name="sessionTime"
+                value={sessionTime}
+                onChange={(e) => setSessionTime(e.target.value)}
+                required
+                placeholder="Enter Session Time"
               />
             </div>
             <div className="form__field__wrapper">
