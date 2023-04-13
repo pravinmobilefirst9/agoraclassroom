@@ -18,14 +18,12 @@ interface savParamsType {
 }
 
 export default function Home() {
-  const [name, setName] = useState<string>("");
-  const [roomId, setRoomId] = useState<string>("");
   const [sessionTime, setSessionTime] = useState<string>("");
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    if (name === "" || roomId === "" || sessionTime === "") {
+    if (sessionTime === "") {
       alert("Please fill the data of name and room id to continue.");
       return false;
     }
@@ -49,6 +47,19 @@ export default function Home() {
         return handleSaveClassroom(data);
       });
   };
+
+  function generateRandomString(length: number) {
+    let result = "";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+  }
 
   function createRoom() {
     var url = "https://shunt-api.netless.link/v5/rooms";
@@ -85,29 +96,29 @@ export default function Home() {
   }
 
   async function createVideoToken(param: paramsType) {
+    let dname = generateRandomString(8);
     let obj = {
-      channelName: name,
+      channelName: dname,
       uId: "0",
     };
 
     var url =
-      "https://agoramobilefirstapi-production.up.railway.app/api/rtc-token";
+      "https://agoramobilefirstapi-production-b221.up.railway.app/api/rtc-token";
     let { data } = await axios.post(url, obj);
     console.log("data", data);
-    return { ...param, videoToken: data.key, channel: name };
+    return { ...param, videoToken: data.key, channel: dname };
   }
 
   const handleSaveDetail = async (params: savParamsType) => {
     const param = {
-      displayName: name,
+      displayName: params.channel,
       uId: 0,
-      roomId: Number(roomId),
       whiteBoardToken: params.roomToken,
       whiteBoardUuid: params.uuid,
       videoToken: params.videoToken,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production.up.railway.app/api/set-platform-data",
+      "https://agoramobilefirstapi-production-b221.up.railway.app/api/set-platform-data",
       param
     );
     console.log("dataaaaaaa", data);
@@ -127,12 +138,12 @@ export default function Home() {
       class_link: `${window.location.origin}/videoCallPage?room=${params?.data?.id}`,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production-122e.up.railway.app/api/set-classroom-data",
+      "https://agoramobilefirstapi-production-b221.up.railway.app/api/set-classroom-data",
       param
     );
     if (data?.message === "Classroom created successfully!") {
       window.location.href = `/videoCallPage?room=${params?.data?.id}&classId=${data?.id}`;
-      sessionStorage.setItem("display_name", name);
+      // sessionStorage.setItem("display_name", name);
     }
   };
   return (
@@ -159,7 +170,7 @@ export default function Home() {
             <p>Create or Join Room</p>
           </div>
           <form id="lobby__form">
-            <div className="form__field__wrapper">
+            {/* <div className="form__field__wrapper">
               <label>Room Name</label>
               <input
                 type="text"
@@ -180,7 +191,7 @@ export default function Home() {
                 required
                 placeholder="Enter room id..."
               />
-            </div>
+            </div> */}
             <div className="form__field__wrapper">
               <label>Session Time</label>
               <input

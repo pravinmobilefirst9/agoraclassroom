@@ -291,7 +291,7 @@ export default function VideoCallMain(props: propType) {
       usertype: role,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production-122e.up.railway.app/api/set-user-data",
+      "https://agoramobilefirstapi-production-b221.up.railway.app/api/set-user-data",
       params
     );
     if (data?.message === "User created successfully!") {

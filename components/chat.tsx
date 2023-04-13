@@ -24,7 +24,7 @@ export default function ChatRoom(props: propType) {
   };
 
   async function fetchRTMToken() {
-    var url = `https://agoramobilefirstapi-production.up.railway.app/api/rtm-token/${uid}`;
+    var url = `https://agoramobilefirstapi-production-b221.up.railway.app/api/rtm-token/${uid}`;
 
     let { data } = await axios.get(url);
     return { token: data?.key, uid: uid };
