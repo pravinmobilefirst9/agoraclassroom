@@ -11,7 +11,7 @@ interface propType {
 }
 
 export default function Whiteboard(props: propType) {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(false);
   const [uploadType, setUploadType] = useState<any>("img");
   const [appState, setAppState] = useState<any>(null);
 
