@@ -23,7 +23,7 @@ export default function Whiteboard(props: propType) {
     setOpen(false);
   };
 
-  const handleFileChange = async (e: { target: { files: any[] } }) => {
+  const handleFileChange = async (e: any) => {
     const selectedFile = e.target.files[0];
     const storageRef = ref(storage, selectedFile.name);
     const uploadTask = uploadBytesResumable(storageRef, selectedFile);
