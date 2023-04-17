@@ -47,6 +47,7 @@ export default function VideoCallMain(props: propType) {
   const [screenTrack, setScreenTrack] = useState<any>(null);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [role, setRole] = useState<string>("Teacher");
+  const [isUserJoin, setIsUserJoin] = useState<boolean>(false);
 
   useEffect(() => {
     if (inCall) {
@@ -121,12 +122,13 @@ export default function VideoCallMain(props: propType) {
           console.log("subscribe success");
           if (mediaType === "video") {
             setUsers((prevUsers) => {
-              return [...prevUsers, user];
+              return [user];
             });
           }
           if (mediaType === "audio") {
             user.audioTrack?.play();
           }
+          setIsUserJoin(true);
         });
 
         client.on("user-unpublished", (user, type) => {
@@ -175,9 +177,6 @@ export default function VideoCallMain(props: propType) {
     }, [, /* channelName */ client, ready, tracks /* isScreenSharing */]);
     return (
       <div className="App">
-        {/* {ready && tracks && (
-          <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
-        )} */}
         {start && tracks && <Videos users={users} tracks={tracks} />}
       </div>
     );
@@ -214,7 +213,7 @@ export default function VideoCallMain(props: propType) {
         });
       }
     };
-
+    console.log("users", users);
     return (
       <>
         <div className="sentImages">
@@ -231,24 +230,24 @@ export default function VideoCallMain(props: propType) {
               </div>
               <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
             </div>
-            {users.length > 0 ? (
-              users.map((user) => {
-                if (user.videoTrack) {
-                  return (
-                    <div className="video-block" key={user.uid}>
-                      <AgoraVideoPlayer
-                        className="vid"
-                        videoTrack={user.videoTrack}
-                      />
-                    </div>
-                  );
-                } else return null;
-              })
-            ) : (
-              <div className="vid">
-                <img src="/images/placeholder.png" alt="" />
-              </div>
-            )}
+            {users.length > 0
+              ? users.map((user) => {
+                  if (user.videoTrack) {
+                    return (
+                      <div className="video-block" key={user.uid}>
+                        <AgoraVideoPlayer
+                          className="vid"
+                          videoTrack={user.videoTrack}
+                        />
+                      </div>
+                    );
+                  } else return null;
+                })
+              : isUserJoin && (
+                  <div className="vid">
+                    <img src="/images/placeholder.png" alt="" />
+                  </div>
+                )}
           </div>
         </div>
         <div className="saveAttachImageEnd">
@@ -260,16 +259,19 @@ export default function VideoCallMain(props: propType) {
                 setIsScreenSharing(true);
               }}
             >
-              <ScreenShareIcon />
+              <ScreenShareIcon style={{ color: "#fff" }} />
             </div>
             <div className="imageText">
-              <p>img</p>
+              <p>Share</p>
             </div>
           </div>
           <div
             className="endMainDiv"
             style={{ cursor: "pointer" }}
-            onClick={() => leaveChannel()}
+            onClick={() => {
+              leaveChannel();
+              setIsUserJoin(false);
+            }}
           >
             <div className="endInnerDiv" style={{ background: "#FF7A7A" }}>
               <img src="/images/log-in.png" alt="" />
