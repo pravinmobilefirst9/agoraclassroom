@@ -48,6 +48,7 @@ export default function VideoCallMain(props: propType) {
   const [userName, setUserName] = useState<string>("");
   const [screenTrack, setScreenTrack] = useState<any>(null);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
+  const [isStartScreenSharing, setIsStartScreenSharing] = useState(false);
   const [role, setRole] = useState<string>("Teacher");
   const [isUserJoin, setIsUserJoin] = useState<boolean>(false);
   const [usersTemp, setUsersTemp] = useState<IAgoraRTCRemoteUser[]>([]);
@@ -243,8 +244,8 @@ export default function VideoCallMain(props: propType) {
           props.roomData.videoToken,
           null
         );
-        if (!isScreenSharing && tracks) {
-          console.log("publish isScreenSharing", isScreenSharing);
+        if (!isStartScreenSharing && tracks) {
+          console.log("publish isStartScreenSharing", isStartScreenSharing);
           await client.publish([tracks[0], tracks[1]]);
         }
         setStart(true);
@@ -353,6 +354,7 @@ export default function VideoCallMain(props: propType) {
               onClick={(e) => {
                 initStreams(e);
                 // setIsScreenSharing(true);
+                setIsStartScreenSharing(true);
               }}
             >
               <ScreenShareIcon style={{ color: "#fff" }} />
