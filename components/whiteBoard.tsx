@@ -27,7 +27,9 @@ export default function Whiteboard(props: propType) {
     const selectedFile = e.target.files[0];
     const storageRef = ref(storage, selectedFile.name);
     const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+      console.log("download url", downloadURL, selectedFile);
       if (uploadType === "docs") {
         const taskId = "73cceb3365f44264a5bdb3907bf16056";
         appState.insertDocs({
@@ -36,6 +38,7 @@ export default function Whiteboard(props: propType) {
           taskId: taskId,
           title: selectedFile.name,
           url: downloadURL,
+          // url: "https://docs.google.com/presentation/d/1kB8UMHAxs8zODno3meBCAXkadKDFaRNU2hy8D8ZDHcc/edit#slide=id.p",
         });
       } else if (uploadType === "video") {
         appState.insertMedia(selectedFile.name, downloadURL);
@@ -198,6 +201,8 @@ export default function Whiteboard(props: propType) {
     mountFastboard(document.getElementById("app"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log("apps", apps);
 
   return (
     <>

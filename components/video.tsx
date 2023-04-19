@@ -4,6 +4,7 @@ import AgoraRTC, {
   ClientConfig,
   IAgoraRTCRemoteUser,
   ICameraVideoTrack,
+  ILocalVideoTrack,
   IMicrophoneAudioTrack,
 } from "agora-rtc-sdk-ng";
 import axios from "axios";
@@ -19,7 +20,8 @@ import VideocamIcon from "@mui/icons-material/Videocam";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import CircularProgress from "@mui/material/CircularProgress";
 import ScreenShareIcon from "@mui/icons-material/ScreenShare";
-import { Grid } from "@mui/material";
+import { Grid, Dialog } from "@mui/material";
+import CropFreeIcon from "@mui/icons-material/CropFree";
 
 const ChatRoom = dynamic(() => import("../components/chat"), {
   ssr: false,
@@ -48,6 +50,7 @@ export default function VideoCallMain(props: propType) {
   const [isScreenSharing, setIsScreenSharing] = useState(false);
   const [role, setRole] = useState<string>("Teacher");
   const [isUserJoin, setIsUserJoin] = useState<boolean>(false);
+  const [usersTemp, setUsersTemp] = useState<IAgoraRTCRemoteUser[]>([]);
 
   useEffect(() => {
     if (inCall) {
@@ -58,12 +61,24 @@ export default function VideoCallMain(props: propType) {
     }
   }, [inCall]);
 
-  const initStreams = async () => {
-    // const clientSC = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
-    // clientSC.init(appId);
+  var channel = "screen_video";
+  var channelKey: string | null = null;
+
+  // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.INFO);
+
+  var screenClient: any = AgoraRTC.createClient({
+    mode: "rtc",
+    codec: "vp8",
+  });
+
+  // const useClientSC = createClient(config);
+  const initStreams = async (e: any) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    // const clientSC = useClientSC();
+    // // clientSC.init(appId);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const client = useClient();
-    // initialize the screen share track
+    // // initialize the screen share track
 
     const screenConfig = {
       encoderConfig: {
@@ -77,12 +92,18 @@ export default function VideoCallMain(props: propType) {
     };
 
     const withAudio = "auto"; // Enable, disable, or auto.
+    // await client.join(
+    //   appId,
+    //   props.roomData.display_name,
+    //   props.roomData.videoToken,
+    //   null
+    // );
 
-    const screenTrack = await AgoraRTC.createScreenVideoTrack(
+    const screenTrack: any = await AgoraRTC.createScreenVideoTrack(
       screenConfig,
       withAudio
     );
-    // await clientSC.join('17a8bd5c2fe04b5db9c64f6c3689c041', `${props.roomData.display_name}sc`, null, null);
+
     setScreenTrack(screenTrack);
     console.log("screenTrack", screenTrack);
     client.unpublish();
@@ -92,6 +113,62 @@ export default function VideoCallMain(props: propType) {
       console.log("New stream added: " + 1);
       client.subscribe(evt.stream, "video");
     });
+
+    // screenClient.init(appId, function () {
+    //   screenClient.join(
+    //     channelKey,
+    //     channel,
+    //     null,
+    //     function () {
+    //       // Create the stream for screen sharing.
+    //       const streamSpec = {
+    //         streamID: "1234",
+    //         audio: false,
+    //         video: false,
+    //         screen: true,
+    //         extensionId: "minllpmhdgpndnkomcoccfekfegnlikg",
+    //       };
+    //       // Set relevant properties according to the browser.
+    //       // Note that you need to implement isFirefox and isCompatibleChrome.
+    //       // if (isFirefox()) {
+    //       //   streamSpec.mediaSource = "window";
+    //       // } else if (!isCompatibleChrome()) {
+    //       // streamSpec.extensionId = "minllpmhdgpndnkomcoccfekfegnlikg";
+    //       // }
+    //       let screenStream = AgoraRTC.createScreenVideoTrack(streamSpec);
+    //       // Initialize the stream.
+    //       console.log("screen stream", screenStream);
+    //       // screenStream.init(
+    //       //   function () {
+    //       //     // Play the stream.
+    //       //     screenStream.play("Screen");
+    //       //     // Publish the stream.
+    //       //     screenClient.publish(screenStream);
+    //       //   },
+    //       //   function (err: any) {
+    //       //     console.log(err);
+    //       //   }
+    //       // );
+    //     },
+    //     function (err: any) {
+    //       console.log(err);
+    //     }
+    //   );
+    // });
+
+    // Number.tem = ua.match(/(Chrome(?=\/))\/?(\d+)/i);
+    // if (
+    //   parseInt(tem[2]) >= 72 &&
+    //   (await navigator.mediaDevices.getDisplayMedia())
+    // ) {
+    //   // Create the stream for screen sharing.
+    //   let screenStream = AgoraRTC.createStream({
+    //     streamID: "1234",
+    //     audio: false,
+    //     video: false,
+    //     screen: true,
+    //   });
+    // }
   };
 
   const useClient = createClient(config);
@@ -117,13 +194,16 @@ export default function VideoCallMain(props: propType) {
       // function to initialise the SDK
       let init = async () => {
         client.on("user-published", async (user, mediaType) => {
-          console.log("client", user);
+          console.log(" ", user);
           await client.subscribe(user, mediaType);
           console.log("subscribe success");
           if (mediaType === "video") {
             setUsers((prevUsers) => {
               return [user];
             });
+            // setUsersTemp((prevUsers) => {
+            //   return [user];
+            // });
           }
           if (mediaType === "audio") {
             user.audioTrack?.play();
@@ -143,12 +223,19 @@ export default function VideoCallMain(props: propType) {
           }
         });
 
+        client.on("stopScreenSharing", () => {
+          console.log("stop sharingggggggggggggggggggggg");
+          client.unpublish();
+          setIsScreenSharing(false);
+        });
+
         client.on("user-left", (user) => {
           console.log("leaving", user);
           setUsers((prevUsers) => {
             return prevUsers.filter((User) => User.uid !== user.uid);
           });
         });
+
         console.log("joinnn");
         await client.join(
           appId,
@@ -156,14 +243,8 @@ export default function VideoCallMain(props: propType) {
           props.roomData.videoToken,
           null
         );
-        console.log(
-          "stop sharingggggggggggggggggggggg outside",
-          client,
-          tracks
-        );
         if (!isScreenSharing && tracks) {
           console.log("publish isScreenSharing", isScreenSharing);
-          // client.unpublish();
           await client.publish([tracks[0], tracks[1]]);
         }
         setStart(true);
@@ -174,7 +255,7 @@ export default function VideoCallMain(props: propType) {
         init();
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [, /* channelName */ client, ready, tracks /* isScreenSharing */]);
+    }, [client, ready, tracks]);
     return (
       <div className="App">
         {start && tracks && <Videos users={users} tracks={tracks} />}
@@ -234,11 +315,26 @@ export default function VideoCallMain(props: propType) {
               ? users.map((user) => {
                   if (user.videoTrack) {
                     return (
-                      <div className="video-block" key={user.uid}>
-                        <AgoraVideoPlayer
-                          className="vid"
-                          videoTrack={user.videoTrack}
+                      <div style={{ position: "relative" }} key={user.uid}>
+                        <CropFreeIcon
+                          style={{
+                            position: "absolute",
+                            right: "8px",
+                            top: "8px",
+                            width: "38px",
+                            height: "24px",
+                            background: "#c4c4c4",
+                            zIndex: "999",
+                            padding: "2px",
+                          }}
+                          onClick={() => setIsScreenSharing(true)}
                         />
+                        <div className="video-block">
+                          <AgoraVideoPlayer
+                            className="vid"
+                            videoTrack={user.videoTrack}
+                          />
+                        </div>
                       </div>
                     );
                   } else return null;
@@ -254,9 +350,9 @@ export default function VideoCallMain(props: propType) {
           <div className="imageMainDiv">
             <div
               className="imageInnerDiv"
-              onClick={() => {
-                initStreams();
-                setIsScreenSharing(true);
+              onClick={(e) => {
+                initStreams(e);
+                // setIsScreenSharing(true);
               }}
             >
               <ScreenShareIcon style={{ color: "#fff" }} />
@@ -281,6 +377,32 @@ export default function VideoCallMain(props: propType) {
             </div>
           </div>
         </div>
+        <Dialog
+          open={isScreenSharing}
+          onClose={() => setIsScreenSharing(false)}
+          className="screen-share-modal"
+        >
+          {users.length > 0 &&
+            users.map((user) => {
+              if (user.videoTrack) {
+                return (
+                  <div
+                    className="video-block"
+                    style={{
+                      width: "75vw",
+                    }}
+                    key={user.uid}
+                  >
+                    <AgoraVideoPlayer
+                      className="vid"
+                      videoTrack={user.videoTrack}
+                      style={{ height: "100vh" }}
+                    />
+                  </div>
+                );
+              } else return null;
+            })}{" "}
+        </Dialog>
       </>
     );
   };
@@ -415,5 +537,8 @@ export default function VideoCallMain(props: propType) {
   );
 }
 function setStart(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
+function isFirefox() {
   throw new Error("Function not implemented.");
 }

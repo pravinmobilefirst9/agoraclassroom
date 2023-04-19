@@ -1203,3 +1203,6 @@ box-shadow: 0px 29px 60px rgba(26, 50, 99, 0.24);
   outline: none;
   border: 1px solid gray;
 }
+.screen-share-modal .MuiPaper-root {
+  max-width: 100%;
+}
