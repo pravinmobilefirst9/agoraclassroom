@@ -22,7 +22,7 @@ export default function VideoCallPage() {
 
   const getRoomDetails = async () => {
     const { data } = await axios.get(
-      `https://agoramobilefirstapi-production-b221.up.railway.app/api/get-room-by-id/${room}`
+      `https://agoramobilefirstapi-production-2d06.up.railway.app/api/get-room-by-id/${room}`
     );
 
     console.log("data", data);

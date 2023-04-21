@@ -5,7 +5,7 @@ interface propType {
   roomData: any;
 }
 
-const APP_ID = "b147b642a2af4b89980e7c016458fd16";
+const APP_ID = "e019f704e66540649e26ab6842ed88bd";
 
 let client = AgoraRTM.createInstance(APP_ID);
 
@@ -24,7 +24,7 @@ export default function ChatRoom(props: propType) {
   };
 
   async function fetchRTMToken() {
-    var url = `https://agoramobilefirstapi-production-b221.up.railway.app/api/rtm-token/${uid}`;
+    var url = `https://agoramobilefirstapi-production-2d06.up.railway.app/api/rtm-token/${uid}`;
 
     let { data } = await axios.get(url);
     return { token: data?.key, uid: uid };

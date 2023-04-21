@@ -3,7 +3,7 @@ import Script from "next/script";
 import axios from "axios";
 
 const sdkToken =
-  "NETLESSSDK_YWs9WDdhMzFxU3FQTkF0c3hOSyZub25jZT1lYjExNjBjMC1kNTA5LTExZWQtOTlkYy01MTgzNDAyNjk3N2Mmcm9sZT0wJnNpZz1lY2I4YWZjMjY5NjY5ZmIzY2ZjODhiMTI3MjNiZWEyMjBkMmQ1ZmE5NzIxMzI0NDQwODBmYTk0YjQ4MTI0MmNh";
+  "NETLESSSDK_YWs9QWRlWGVZUlRMUnUtZnNnQyZub25jZT03YzM2YTcxMC1lMDUyLTExZWQtYjMwNy05OTU3MGYxZjZmN2Qmcm9sZT0wJnNpZz04M2MyMzA3NDQxZWNiYmQ3ZWU1ZTdiYjdiMDRmYTlkMjAwMDY1YzZiMzQ0MTY3MDc1NTMwOTdiYmYyYmQwMTlj";
 const region = "cn-hz";
 interface paramsType {
   uuid: string;
@@ -103,7 +103,7 @@ export default function Home() {
     };
 
     var url =
-      "https://agoramobilefirstapi-production-b221.up.railway.app/api/rtc-token";
+      "https://agoramobilefirstapi-production-2d06.up.railway.app/api/rtc-token";
     let { data } = await axios.post(url, obj);
     console.log("data", data);
     return { ...param, videoToken: data.key, channel: dname };
@@ -118,10 +118,9 @@ export default function Home() {
       videoToken: params.videoToken,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production-b221.up.railway.app/api/set-platform-data",
+      "https://agoramobilefirstapi-production-2d06.up.railway.app/api/set-platform-data",
       param
     );
-    console.log("dataaaaaaa", data);
     return { ...params, data: data };
   };
 
@@ -138,12 +137,11 @@ export default function Home() {
       class_link: `${window.location.origin}/videoCallPage?room=${params?.data?.id}`,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production-b221.up.railway.app/api/set-classroom-data",
+      "https://agoramobilefirstapi-production-2d06.up.railway.app/api/set-classroom-data",
       param
     );
     if (data?.message === "Classroom created successfully!") {
       window.location.href = `/videoCallPage?room=${params?.data?.id}&classId=${data?.id}`;
-      // sessionStorage.setItem("display_name", name);
     }
   };
   return (
@@ -170,28 +168,6 @@ export default function Home() {
             <p>Create or Join Room</p>
           </div>
           <form id="lobby__form">
-            {/* <div className="form__field__wrapper">
-              <label>Room Name</label>
-              <input
-                type="text"
-                name="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="Enter your room name..."
-              />
-            </div>
-            <div className="form__field__wrapper">
-              <label>Room ID</label>
-              <input
-                type="text"
-                name="room"
-                value={roomId}
-                onChange={(e) => setRoomId(e.target.value)}
-                required
-                placeholder="Enter room id..."
-              />
-            </div> */}
             <div className="form__field__wrapper">
               <label>Session Time</label>
               <input

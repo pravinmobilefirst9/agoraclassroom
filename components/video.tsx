@@ -4,7 +4,6 @@ import AgoraRTC, {
   ClientConfig,
   IAgoraRTCRemoteUser,
   ICameraVideoTrack,
-  ILocalVideoTrack,
   IMicrophoneAudioTrack,
 } from "agora-rtc-sdk-ng";
 import axios from "axios";
@@ -40,7 +39,7 @@ interface propType {
   roomData: any;
 }
 
-const appId: string = "b147b642a2af4b89980e7c016458fd16";
+const appId: string = "e019f704e66540649e26ab6842ed88bd";
 
 export default function VideoCallMain(props: propType) {
   const [inCall, setInCall] = useState<boolean>(false);
@@ -62,21 +61,9 @@ export default function VideoCallMain(props: propType) {
     }
   }, [inCall]);
 
-  var channel = "screen_video";
-  var channelKey: string | null = null;
+  const useClient = createClient(config);
 
-  // AgoraRTC.Logger.setLogLevel(AgoraRTC.Logger.INFO);
-
-  var screenClient: any = AgoraRTC.createClient({
-    mode: "rtc",
-    codec: "vp8",
-  });
-
-  // const useClientSC = createClient(config);
   const initStreams = async (e: any) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    // const clientSC = useClientSC();
-    // // clientSC.init(appId);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const client = useClient();
     // // initialize the screen share track
@@ -93,12 +80,6 @@ export default function VideoCallMain(props: propType) {
     };
 
     const withAudio = "auto"; // Enable, disable, or auto.
-    // await client.join(
-    //   appId,
-    //   props.roomData.display_name,
-    //   props.roomData.videoToken,
-    //   null
-    // );
 
     const screenTrack: any = await AgoraRTC.createScreenVideoTrack(
       screenConfig,
@@ -114,76 +95,9 @@ export default function VideoCallMain(props: propType) {
       console.log("New stream added: " + 1);
       client.subscribe(evt.stream, "video");
     });
-
-    // screenClient.init(appId, function () {
-    //   screenClient.join(
-    //     channelKey,
-    //     channel,
-    //     null,
-    //     function () {
-    //       // Create the stream for screen sharing.
-    //       const streamSpec = {
-    //         streamID: "1234",
-    //         audio: false,
-    //         video: false,
-    //         screen: true,
-    //         extensionId: "minllpmhdgpndnkomcoccfekfegnlikg",
-    //       };
-    //       // Set relevant properties according to the browser.
-    //       // Note that you need to implement isFirefox and isCompatibleChrome.
-    //       // if (isFirefox()) {
-    //       //   streamSpec.mediaSource = "window";
-    //       // } else if (!isCompatibleChrome()) {
-    //       // streamSpec.extensionId = "minllpmhdgpndnkomcoccfekfegnlikg";
-    //       // }
-    //       let screenStream = AgoraRTC.createScreenVideoTrack(streamSpec);
-    //       // Initialize the stream.
-    //       console.log("screen stream", screenStream);
-    //       // screenStream.init(
-    //       //   function () {
-    //       //     // Play the stream.
-    //       //     screenStream.play("Screen");
-    //       //     // Publish the stream.
-    //       //     screenClient.publish(screenStream);
-    //       //   },
-    //       //   function (err: any) {
-    //       //     console.log(err);
-    //       //   }
-    //       // );
-    //     },
-    //     function (err: any) {
-    //       console.log(err);
-    //     }
-    //   );
-    // });
-
-    // Number.tem = ua.match(/(Chrome(?=\/))\/?(\d+)/i);
-    // if (
-    //   parseInt(tem[2]) >= 72 &&
-    //   (await navigator.mediaDevices.getDisplayMedia())
-    // ) {
-    //   // Create the stream for screen sharing.
-    //   let screenStream = AgoraRTC.createStream({
-    //     streamID: "1234",
-    //     audio: false,
-    //     video: false,
-    //     screen: true,
-    //   });
-    // }
   };
 
-  const useClient = createClient(config);
   const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const client = useClient();
-    client.on("stopScreenSharing", () => {
-      console.log("stop sharingggggggggggggggggggggg");
-      client.unpublish();
-      setIsScreenSharing(false);
-    });
-  }, [useClient]);
 
   const VideoCall = () => {
     const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
@@ -224,12 +138,6 @@ export default function VideoCallMain(props: propType) {
           }
         });
 
-        client.on("stopScreenSharing", () => {
-          console.log("stop sharingggggggggggggggggggggg");
-          client.unpublish();
-          setIsScreenSharing(false);
-        });
-
         client.on("user-left", (user) => {
           console.log("leaving", user);
           setUsers((prevUsers) => {
@@ -237,7 +145,6 @@ export default function VideoCallMain(props: propType) {
           });
         });
 
-        console.log("joinnn");
         await client.join(
           appId,
           props.roomData.display_name,
@@ -353,7 +260,6 @@ export default function VideoCallMain(props: propType) {
               className="imageInnerDiv"
               onClick={(e) => {
                 initStreams(e);
-                // setIsScreenSharing(true);
                 setIsStartScreenSharing(true);
               }}
             >
@@ -417,7 +323,7 @@ export default function VideoCallMain(props: propType) {
       usertype: role,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production-b221.up.railway.app/api/set-user-data",
+      "https://agoramobilefirstapi-production-2d06.up.railway.app/api/set-user-data",
       params
     );
     if (data?.message === "User created successfully!") {
@@ -508,25 +414,15 @@ export default function VideoCallMain(props: propType) {
             <>
               <div className="whiteboard">
                 <Grid container>
-                  {/* <div className="whiteboard__screen"> */}
                   <Grid item xs={9}>
                     {props?.roomData !== null && (
                       <Whiteboard roomData={props?.roomData} />
                     )}
                   </Grid>
                   <Grid item xs={3}>
-                    {/* <div className="screen__chat"> */}
-                    {/* <div className="chat"> */}
-                    {/* <div className="chat_content"> */}
                     <VideoCall />
-                    {/* </div> */}
-                    {/* <div> */}
                     <ChatRoom roomData={props.roomData} />
-                    {/* </div> */}
-                    {/* </div> */}
-                    {/* </div> */}
                   </Grid>
-                  {/* </div> */}
                 </Grid>
               </div>
             </>
@@ -537,10 +433,4 @@ export default function VideoCallMain(props: propType) {
       )}
     </>
   );
-}
-function setStart(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}
-function isFirefox() {
-  throw new Error("Function not implemented.");
 }
