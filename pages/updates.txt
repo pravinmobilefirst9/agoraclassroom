@@ -1,0 +1,12 @@
+21/04/2023 -
+
+- call with kossai regarding new agora account creation
+- setup new account config to codebase
+- facing some error while add new acount fix this
+- team call of airbatch for project and flow discussion
+
+24/04/2023 -
+
+- railway account limit over
+- setup new railway account and use it into code
+- call with pravin and hozefa regarding create new account and project

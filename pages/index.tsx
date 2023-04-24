@@ -103,7 +103,7 @@ export default function Home() {
     };
 
     var url =
-      "https://agoramobilefirstapi-production-2d06.up.railway.app/api/rtc-token";
+      "https://agoramobilefirstapi-production-0666.up.railway.app/api/rtc-token";
     let { data } = await axios.post(url, obj);
     console.log("data", data);
     return { ...param, videoToken: data.key, channel: dname };
@@ -118,7 +118,7 @@ export default function Home() {
       videoToken: params.videoToken,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production-2d06.up.railway.app/api/set-platform-data",
+      "https://agoramobilefirstapi-production-0666.up.railway.app/api/set-platform-data",
       param
     );
     return { ...params, data: data };
@@ -137,7 +137,7 @@ export default function Home() {
       class_link: `${window.location.origin}/videoCallPage?room=${params?.data?.id}`,
     };
     const { data } = await axios.post(
-      "https://agoramobilefirstapi-production-2d06.up.railway.app/api/set-classroom-data",
+      "https://agoramobilefirstapi-production-0666.up.railway.app/api/set-classroom-data",
       param
     );
     if (data?.message === "Classroom created successfully!") {
