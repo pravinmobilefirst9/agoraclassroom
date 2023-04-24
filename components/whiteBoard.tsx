@@ -91,113 +91,114 @@ export default function Whiteboard(props: propType) {
       kind: "Countdown",
       src: Countdown,
     });
+    if (apps.length < 8) {
+      apps.push({
+        icon: "https://api.iconify.design/ic:outline-slideshow.svg?color=currentColor",
+        kind: "Slide",
+        label: "Slide",
+        onClick: (app) => {
+          setAppState(app);
+          setUploadType("docs");
+          handleClickOpen();
+        },
+      });
 
-    apps.push({
-      icon: "https://api.iconify.design/ic:outline-slideshow.svg?color=currentColor",
-      kind: "Slide",
-      label: "Slide",
-      onClick: (app) => {
-        setAppState(app);
-        setUploadType("docs");
-        handleClickOpen();
-      },
-    });
+      apps.push({
+        icon: "https://api.iconify.design/ic:baseline-image.svg?color=currentColor",
+        kind: "Image",
+        label: "Image",
+        onClick: (app: any) => {
+          setAppState(app);
+          setUploadType("img");
+          handleClickOpen();
+        },
+      });
 
-    apps.push({
-      icon: "https://api.iconify.design/ic:baseline-image.svg?color=currentColor",
-      kind: "Image",
-      label: "Image",
-      onClick: (app: any) => {
-        setAppState(app);
-        setUploadType("img");
-        handleClickOpen();
-      },
-    });
+      apps.push({
+        icon: "https://api.iconify.design/material-symbols:video-stable-outline.svg?color=currentColor",
+        kind: "Media",
+        label: "Media",
+        onClick: (app) => {
+          setAppState(app);
+          setUploadType("video");
+          handleClickOpen();
+        },
+      });
 
-    apps.push({
-      icon: "https://api.iconify.design/material-symbols:video-stable-outline.svg?color=currentColor",
-      kind: "Media",
-      label: "Media",
-      onClick: (app) => {
-        setAppState(app);
-        setUploadType("video");
-        handleClickOpen();
-      },
-    });
-
-    apps.push({
-      icon: "https://api.iconify.design/logos:youtube-icon.svg?color=currentColor",
-      kind: "Plyr",
-      label: "YouTube",
-      onClick(app) {
-        const url = window.prompt(
-          "Enter YouTube URL",
-          "https://www.youtube.com/watch?v=bTqVqk7FSmY"
-        );
-        if (!url) return;
-        app.manager.addApp({
-          kind: "Plyr",
-          options: { title: "YouTube" },
-          attributes: {
-            src: url,
-            provider: "youtube",
-          },
-        });
-      },
-    });
-
-    apps.push({
-      icon: "https://api.iconify.design/mingcute:screenshot-line.svg?color=currentColor",
-      kind: "Snapshot",
-      label: "Screenshot",
-      onClick(app) {
-        const view = app.manager.mainView;
-        const canvas = document.createElement("canvas");
-        canvas.width = view.size.width;
-        canvas.height = view.size.height;
-        const c = canvas.getContext("2d");
-        if (!c) {
-          alert("canvas.getContext('2d') failed!");
-          return;
-        }
-        view.screenshotToCanvas(
-          c,
-          view.focusScenePath || "/init",
-          view.size.width,
-          view.size.height,
-          view.camera
-        );
-        try {
-          canvas.toBlob((blob) => {
-            if (!blob) {
-              alert("context.toBlob() failed!");
-              return;
-            }
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "screenshot.png";
-            a.click();
+      apps.push({
+        icon: "https://api.iconify.design/logos:youtube-icon.svg?color=currentColor",
+        kind: "Plyr",
+        label: "YouTube",
+        onClick(app) {
+          const url = window.prompt(
+            "Enter YouTube URL",
+            "https://www.youtube.com/watch?v=bTqVqk7FSmY"
+          );
+          if (!url) return;
+          app.manager.addApp({
+            kind: "Plyr",
+            options: { title: "YouTube" },
+            attributes: {
+              src: url,
+              provider: "youtube",
+            },
           });
-        } catch (err) {
-          const dialog = document.createElement("section");
-          dialog.className = "dialog";
-          const header = document.createElement("p");
-          header.textContent =
-            "This image contains CORS resources that cannot be exported to URL, you can right click and save this image manually.";
-          const closeBtn = document.createElement("button");
-          closeBtn.innerHTML = "&cross;";
-          closeBtn.title = "close dialog";
-          closeBtn.onclick = function closeDialog() {
-            if (dialog.parentElement) dialog.remove();
-          };
-          header.appendChild(closeBtn);
-          dialog.appendChild(header);
-          dialog.appendChild(canvas);
-          document.body.appendChild(dialog);
-        }
-      },
-    });
+        },
+      });
+
+      apps.push({
+        icon: "https://api.iconify.design/mingcute:screenshot-line.svg?color=currentColor",
+        kind: "Snapshot",
+        label: "Screenshot",
+        onClick(app) {
+          const view = app.manager.mainView;
+          const canvas = document.createElement("canvas");
+          canvas.width = view.size.width;
+          canvas.height = view.size.height;
+          const c = canvas.getContext("2d");
+          if (!c) {
+            alert("canvas.getContext('2d') failed!");
+            return;
+          }
+          view.screenshotToCanvas(
+            c,
+            view.focusScenePath || "/init",
+            view.size.width,
+            view.size.height,
+            view.camera
+          );
+          try {
+            canvas.toBlob((blob) => {
+              if (!blob) {
+                alert("context.toBlob() failed!");
+                return;
+              }
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = "screenshot.png";
+              a.click();
+            });
+          } catch (err) {
+            const dialog = document.createElement("section");
+            dialog.className = "dialog";
+            const header = document.createElement("p");
+            header.textContent =
+              "This image contains CORS resources that cannot be exported to URL, you can right click and save this image manually.";
+            const closeBtn = document.createElement("button");
+            closeBtn.innerHTML = "&cross;";
+            closeBtn.title = "close dialog";
+            closeBtn.onclick = function closeDialog() {
+              if (dialog.parentElement) dialog.remove();
+            };
+            header.appendChild(closeBtn);
+            dialog.appendChild(header);
+            dialog.appendChild(canvas);
+            document.body.appendChild(dialog);
+          }
+        },
+      });
+    }
     mountFastboard(document.getElementById("app"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -79,7 +79,7 @@ export default function VideoCallMain(props: propType) {
       appID: appId,
     };
 
-    const withAudio = "auto"; // Enable, disable, or auto.
+    const withAudio = "disable"; // Enable, disable, or auto.
 
     const screenTrack: any = await AgoraRTC.createScreenVideoTrack(
       screenConfig,
@@ -109,21 +109,18 @@ export default function VideoCallMain(props: propType) {
       // function to initialise the SDK
       let init = async () => {
         client.on("user-published", async (user, mediaType) => {
-          console.log(" ", user);
+          console.log("userssss", user);
           await client.subscribe(user, mediaType);
           console.log("subscribe success");
           if (mediaType === "video") {
             setUsers((prevUsers) => {
               return [user];
             });
-            // setUsersTemp((prevUsers) => {
-            //   return [user];
-            // });
           }
           if (mediaType === "audio") {
             user.audioTrack?.play();
           }
-          setIsUserJoin(true);
+          // setIsUserJoin(true);
         });
 
         client.on("user-unpublished", (user, type) => {
@@ -178,7 +175,7 @@ export default function VideoCallMain(props: propType) {
     const client = useClient();
     const [trackState, setTrackState] = useState({ video: true, audio: true });
     const { users, tracks } = props;
-    console.log("users", users, tracks);
+    console.log("users", users, tracks, trackState);
 
     const leaveChannel = async () => {
       await client.leave();
@@ -219,39 +216,39 @@ export default function VideoCallMain(props: propType) {
               </div>
               <AgoraVideoPlayer className="vid" videoTrack={tracks[1]} />
             </div>
-            {users.length > 0
-              ? users.map((user) => {
-                  if (user.videoTrack) {
-                    return (
-                      <div style={{ position: "relative" }} key={user.uid}>
-                        <CropFreeIcon
-                          style={{
-                            position: "absolute",
-                            right: "8px",
-                            top: "8px",
-                            width: "38px",
-                            height: "24px",
-                            background: "#c4c4c4",
-                            zIndex: "999",
-                            padding: "2px",
-                          }}
-                          onClick={() => setIsScreenSharing(true)}
+            {users.length > 0 ? (
+              users.map((user) => {
+                if (user.videoTrack) {
+                  return (
+                    <div style={{ position: "relative" }} key={user.uid}>
+                      <CropFreeIcon
+                        style={{
+                          position: "absolute",
+                          right: "8px",
+                          top: "8px",
+                          width: "38px",
+                          height: "24px",
+                          background: "#c4c4c4",
+                          zIndex: "999",
+                          padding: "2px",
+                        }}
+                        onClick={() => setIsScreenSharing(true)}
+                      />
+                      <div className="video-block">
+                        <AgoraVideoPlayer
+                          className="vid"
+                          videoTrack={user.videoTrack}
                         />
-                        <div className="video-block">
-                          <AgoraVideoPlayer
-                            className="vid"
-                            videoTrack={user.videoTrack}
-                          />
-                        </div>
                       </div>
-                    );
-                  } else return null;
-                })
-              : isUserJoin && (
-                  <div className="vid">
-                    <img src="/images/placeholder.png" alt="" />
-                  </div>
-                )}
+                    </div>
+                  );
+                } else return null;
+              })
+            ) : (
+              /* isUserJoin && */ <div className="vid">
+                <img src="/images/placeholder.png" alt="" />
+              </div>
+            )}
           </div>
         </div>
         <div className="saveAttachImageEnd">
@@ -274,7 +271,7 @@ export default function VideoCallMain(props: propType) {
             style={{ cursor: "pointer" }}
             onClick={() => {
               leaveChannel();
-              setIsUserJoin(false);
+              // setIsUserJoin(false);
             }}
           >
             <div className="endInnerDiv" style={{ background: "#FF7A7A" }}>
