@@ -39,7 +39,7 @@ interface propType {
   roomData: any;
 }
 
-const appId: string = "e019f704e66540649e26ab6842ed88bd";
+const appId: string = process.env.APP_ID || "";
 
 export default function VideoCallMain(props: propType) {
   const [inCall, setInCall] = useState<boolean>(false);

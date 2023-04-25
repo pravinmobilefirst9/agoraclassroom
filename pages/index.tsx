@@ -2,9 +2,8 @@ import { useState } from "react";
 import Script from "next/script";
 import axios from "axios";
 
-const sdkToken =
-  "NETLESSSDK_YWs9QWRlWGVZUlRMUnUtZnNnQyZub25jZT03YzM2YTcxMC1lMDUyLTExZWQtYjMwNy05OTU3MGYxZjZmN2Qmcm9sZT0wJnNpZz04M2MyMzA3NDQxZWNiYmQ3ZWU1ZTdiYjdiMDRmYTlkMjAwMDY1YzZiMzQ0MTY3MDc1NTMwOTdiYmYyYmQwMTlj";
-const region = "cn-hz";
+const sdkToken: string = process.env.WHITEBOARD_SDK_TOKEN || "";
+const region: string = process.env.REGION || "";
 interface paramsType {
   uuid: string;
   roomToken: string;
@@ -19,7 +18,12 @@ interface savParamsType {
 
 export default function Home() {
   const [sessionTime, setSessionTime] = useState<string>("");
+  console.log(
+    "env",
+    process.env.APP_ID,
 
+    process.env.APP_IDENTIFIRE
+  );
   const handleSubmit = (e: any) => {
     e.preventDefault();
 

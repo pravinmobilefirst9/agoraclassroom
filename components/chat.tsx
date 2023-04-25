@@ -5,7 +5,7 @@ interface propType {
   roomData: any;
 }
 
-const APP_ID = "e019f704e66540649e26ab6842ed88bd";
+const APP_ID = process.env.APP_ID || "";
 
 let client = AgoraRTM.createInstance(APP_ID);
 

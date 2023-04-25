@@ -50,8 +50,8 @@ export default function Whiteboard(props: propType) {
     });
   };
 
-  const appIdentifier = "sBz7gOAjEe2zB5lXDx9vfQ/IS9_w0gLU7jpdg";
-  const region = "cn-hz";
+  const appIdentifier: string = process.env.APP_IDENTIFIRE || "";
+  const region: string = process.env.REGION || "";
 
   let app;
   async function mountFastboard(div: any) {
